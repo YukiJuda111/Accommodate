@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package getCaptcha;
+
+option go_package = "./proto;getCaptcha";
+
+service GetCaptcha {
+	rpc Call(CallRequest) returns (CallResponse) {}
+}
+
+message CallRequest {
+}
+
+message CallResponse {
+	// json序列化后的图片
+	bytes img = 1;
+}
+

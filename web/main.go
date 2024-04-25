@@ -13,6 +13,7 @@ func main() {
 	router.Static("/home", "view")
 	// 注册路由
 	router.GET("/api/v1.0/session", controller.GetSession)
+	router.GET("/api/v1.0/imagecode/:uuid", controller.GetImageCd)
 	// 启动运行
 	router.Run(":8080")
 }
