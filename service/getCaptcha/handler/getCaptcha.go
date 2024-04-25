@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"getCaptcha/model"
 	"github.com/afocus/captcha"
 	"go-micro.dev/v4/logger"
 	"image/color"
@@ -26,7 +27,12 @@ func (e *GetCaptcha) Call(ctx context.Context, req *pb.CallRequest, rsp *pb.Call
 	// 设置背景色 可以多个 随机替换背景色 默认白色
 	capt.SetBkgColor(color.RGBA{R: 255, A: 255}, color.RGBA{B: 255, A: 255}, color.RGBA{G: 153, A: 255})
 
-	img, _ := capt.Create(6, captcha.ALL)
+	img, str := capt.Create(6, captcha.ALL)
+	err := model.SaveImg(str, req.Uuid)
+	if err != nil {
+		logger.Errorf("Error saving image: %v", err)
+		return err
+	}
 	// 将图片json序列化
 	imgBuf, err := json.Marshal(img)
 	if err != nil {

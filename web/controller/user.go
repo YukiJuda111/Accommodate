@@ -33,7 +33,9 @@ func GetImageCd(c *gin.Context) {
 		micro.Registry(consulReg),
 	)
 	client := getCaptcha.NewGetCaptchaService("getcaptcha", consulSev.Client())
-	request := &getCaptcha.CallRequest{}
+	request := &getCaptcha.CallRequest{
+		Uuid: uuid,
+	}
 	resp, err := client.Call(context.Background(), request)
 	if err != nil {
 		fmt.Println(err)

@@ -7,6 +7,7 @@ toolchain go1.22.1
 require (
 	github.com/afocus/captcha v0.0.0-20191010092841-4bd1f21c8868
 	github.com/go-micro/plugins/v4/registry/consul v1.2.1
+	github.com/gomodule/redigo v1.9.2
 	go-micro.dev/v4 v4.10.2
 )
 

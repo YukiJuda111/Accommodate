@@ -23,7 +23,6 @@ var _ = math.Inf
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ api.Endpoint
-
 var _ context.Context
 var _ client.Option
 var _ server.Option
