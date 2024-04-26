@@ -1,7 +1,8 @@
 package controller
 
 import (
-	getCaptcha "RentHouse/web/proto"
+	"RentHouse/web/proto/getCaptcha"
+	"RentHouse/web/proto/user"
 	"RentHouse/web/utils"
 	"context"
 	"encoding/json"
@@ -55,6 +56,30 @@ func GetImageCd(c *gin.Context) {
 		fmt.Println(err)
 		return
 	}
+}
 
-	fmt.Println(uuid)
+func GetSmscd(c *gin.Context) {
+	phoneNum := c.Param("phonenum")
+	imgCode := c.Query("text")
+	imgUUID := c.Query("id")
+
+	consulReg := consul.NewRegistry()
+	consulSev := micro.NewService(
+		micro.Registry(consulReg),
+	)
+	client := user.NewUserService("user", consulSev.Client())
+	request := &user.SmsRequest{
+		PhoneNum: phoneNum,
+		ImgCode:  imgCode,
+		Uuid:     imgUUID,
+	}
+	resp, err := client.SendSms(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"errno":  resp.Errno,
+		"errmsg": utils.RecodeText(resp.Errno),
+	})
 }

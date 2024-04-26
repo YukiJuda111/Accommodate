@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "./proto;user";
+
+service User {
+	rpc SendSms(SmsRequest) returns (SmsResponse) {}
+}
+
+message SmsRequest {
+	string phoneNum = 1;
+	string imgCode = 2;
+	string uuid = 3;
+}
+
+message SmsResponse {
+	string errno = 1;
+}
+
