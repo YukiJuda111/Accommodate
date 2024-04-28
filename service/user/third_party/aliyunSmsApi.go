@@ -13,7 +13,7 @@ func SendSms(phoneNum string) (string, error) {
 	//-------------------阿里云短信发送api-------------------
 	config := sdk.NewConfig()
 
-	// TODO: Replace with your access key ID and secret
+	// TODO: 在系统环境中配置ALIBABA_CLOUD_ACCESS_KEY_ID和ALIBABA_CLOUD_ACCESS_KEY_SECRET环境变量
 	// Please ensure that the environment variables ALIBABA_CLOUD_ACCESS_KEY_ID and ALIBABA_CLOUD_ACCESS_KEY_SECRET are set.
 	credential := credentials.NewAccessKeyCredential(os.Getenv("ALIBABA_CLOUD_ACCESS_KEY_ID"), os.Getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET"))
 	/* use STS Token
@@ -36,6 +36,5 @@ func SendSms(phoneNum string) (string, error) {
 	smsCode := strconv.Itoa(rand.Intn(1000000))
 	request.QueryParams["TemplateParam"] = "{\"code\":\"" + smsCode + "\"}"
 	_, err = client.ProcessCommonRequest(request)
-
 	return smsCode, err
 }

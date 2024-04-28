@@ -3,7 +3,8 @@ package main
 import (
 	"github.com/go-micro/plugins/v4/registry/consul"
 	"user/handler"
-	"user/model"
+	mysql "user/model/mysql"
+	redis "user/model/redis"
 	pb "user/proto"
 
 	"go-micro.dev/v4"
@@ -16,7 +17,11 @@ var (
 )
 
 func main() {
-	model.RedisInit()
+	_, err := mysql.GormInit()
+	if err != nil {
+		return
+	}
+	redis.RedisInit()
 
 	consulReg := consul.NewRegistry()
 	// Create service
@@ -29,11 +34,11 @@ func main() {
 	)
 
 	// Register handler
-	if err := pb.RegisterUserHandler(srv.Server(), new(handler.User)); err != nil {
+	if err = pb.RegisterUserHandler(srv.Server(), new(handler.User)); err != nil {
 		logger.Fatal(err)
 	}
 	// Run service
-	if err := srv.Run(); err != nil {
+	if err = srv.Run(); err != nil {
 		logger.Fatal(err)
 	}
 }

@@ -9,8 +9,6 @@ import (
 	"fmt"
 	"github.com/afocus/captcha"
 	"github.com/gin-gonic/gin"
-	"github.com/go-micro/plugins/v4/registry/consul"
-	"go-micro.dev/v4"
 	"image/png"
 	"net/http"
 )
@@ -29,11 +27,8 @@ func GetSession(c *gin.Context) {
 func GetImageCd(c *gin.Context) {
 	uuid := c.Param("uuid")
 
-	consulReg := consul.NewRegistry()
-	consulSev := micro.NewService(
-		micro.Registry(consulReg),
-	)
-	client := getCaptcha.NewGetCaptchaService("getcaptcha", consulSev.Client())
+	consulSrv := utils.InitMicro()
+	client := getCaptcha.NewGetCaptchaService("getcaptcha", consulSrv.Client())
 	request := &getCaptcha.CallRequest{
 		Uuid: uuid,
 	}
@@ -58,22 +53,52 @@ func GetImageCd(c *gin.Context) {
 	}
 }
 
+// GetSmscd 获取短信验证码
 func GetSmscd(c *gin.Context) {
 	phoneNum := c.Param("phonenum")
 	imgCode := c.Query("text")
 	imgUUID := c.Query("id")
 
-	consulReg := consul.NewRegistry()
-	consulSev := micro.NewService(
-		micro.Registry(consulReg),
-	)
-	client := user.NewUserService("user", consulSev.Client())
+	consulSrv := utils.InitMicro()
+	client := user.NewUserService("user", consulSrv.Client())
 	request := &user.SmsRequest{
 		PhoneNum: phoneNum,
 		ImgCode:  imgCode,
 		Uuid:     imgUUID,
 	}
 	resp, err := client.SendSms(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"errno":  resp.Errno,
+		"errmsg": utils.RecodeText(resp.Errno),
+	})
+}
+
+// PostRet 发送注册信息
+func PostRet(c *gin.Context) {
+	// 获取在请求荷载中的数据(随着POST请求发送的数据)
+	var regData struct {
+		Mobile   string `json:"mobile"`
+		Password string `json:"password"`
+		SmsCode  string `json:"sms_code"`
+	}
+	err := c.Bind(&regData)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	consulSrv := utils.InitMicro()
+	client := user.NewUserService("user", consulSrv.Client())
+	request := &user.RegisterRequest{
+		PhoneNum: regData.Mobile,
+		Password: regData.Password,
+		SmsCode:  regData.SmsCode,
+	}
+	resp, err := client.Register(context.Background(), request)
 	if err != nil {
 		fmt.Println(err)
 		return

@@ -6,6 +6,7 @@ option go_package = "./proto;user";
 
 service User {
 	rpc SendSms(SmsRequest) returns (SmsResponse) {}
+	rpc Register(RegisterRequest) returns (RegisterResponse) {}
 }
 
 message SmsRequest {
@@ -15,6 +16,16 @@ message SmsRequest {
 }
 
 message SmsResponse {
+	string errno = 1;
+}
+
+message RegisterRequest {
+	string phoneNum = 1;
+	string password = 2;
+	string smsCode = 3;
+}
+
+message RegisterResponse {
 	string errno = 1;
 }
 

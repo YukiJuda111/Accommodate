@@ -1,6 +1,14 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+    <inspection_tool class="GoDfaErrorMayBeNotNil" enabled="true" level="WARNING" enabled_by_default="true">
+      <functions>
+        <function importPath="gorm.io/gorm" name="Open" />
+      </functions>
+      <methods>
+        <method importPath="gorm.io/gorm" receiver="*DB" name="DB" />
+      </methods>
+    </inspection_tool>
     <inspection_tool class="GoUnhandledErrorResult" enabled="true" level="WARNING" enabled_by_default="true">
       <methods>
         <method importPath="strings" receiver="*Builder" name="WriteByte" />

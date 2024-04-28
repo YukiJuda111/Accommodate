@@ -9,11 +9,14 @@ require (
 	github.com/go-micro/plugins/v4/registry/consul v1.2.1
 	github.com/gomodule/redigo v1.9.2
 	go-micro.dev/v4 v4.10.2
+	gorm.io/driver/mysql v1.5.6
+	gorm.io/gorm v1.25.10
 )
 
 require (
 	github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da // indirect
 	github.com/fatih/color v1.9.0 // indirect
+	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/hashicorp/consul/api v1.9.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v0.12.0 // indirect
@@ -21,6 +24,8 @@ require (
 	github.com/hashicorp/go-rootcerts v1.0.2 // indirect
 	github.com/hashicorp/golang-lru v0.5.1 // indirect
 	github.com/hashicorp/serf v0.9.5 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect

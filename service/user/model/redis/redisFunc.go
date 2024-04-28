@@ -5,19 +5,7 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
-var redisPool *redis.Pool
-
-func RedisInit() {
-	redisPool = &redis.Pool{
-		MaxIdle:     20,
-		MaxActive:   50,
-		IdleTimeout: 300,
-		Dial: func() (redis.Conn, error) {
-			return redis.Dial("tcp", "127.0.0.1:6379")
-		},
-	}
-}
-
+// CheckImgCode saves the img code
 func CheckImgCode(uuid, code string) bool {
 	conn := redisPool.Get()
 	defer conn.Close()
@@ -29,6 +17,7 @@ func CheckImgCode(uuid, code string) bool {
 	return imgCode == code
 }
 
+// SaveSmsCode saves the sms code
 func SaveSmsCode(phoneNum, code string) error {
 	conn := redisPool.Get()
 	defer conn.Close()
@@ -37,4 +26,16 @@ func SaveSmsCode(phoneNum, code string) error {
 		fmt.Println("redis setex phone failed, err:", err)
 	}
 	return err
+}
+
+// CheckSmsCode checks the sms code
+func CheckSmsCode(phoneNum, code string) bool {
+	conn := redisPool.Get()
+	defer conn.Close()
+	smsCode, err := redis.String(conn.Do("GET", phoneNum+"_code"))
+	if err != nil {
+		fmt.Println("redis get phone failed, err:", err)
+		return false
+	}
+	return smsCode == code
 }
