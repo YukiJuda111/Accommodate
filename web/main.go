@@ -2,15 +2,19 @@ package main
 
 import (
 	"RentHouse/web/controller"
-	mysql "RentHouse/web/model/mysql"
+	modelMysql "RentHouse/web/model/mysql"
+	modelRedis "RentHouse/web/model/redis"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	_, err := mysql.GormInit()
+	_, err := modelMysql.GormInit()
 	if err != nil {
 		return
 	}
+
+	modelRedis.RedisInit()
+
 	// ------------gin框架的初始化----------------
 	// 初始化路由
 	router := gin.Default()
@@ -23,6 +27,7 @@ func main() {
 		g.GET("/imagecode/:uuid", controller.GetImageCd)
 		g.GET("/smscode/:phonenum", controller.GetSmscd)
 		g.POST("/users", controller.PostRet)
+		g.GET("/areas", controller.GetArea)
 	}
 	// 启动运行
 	router.Run(":8080")

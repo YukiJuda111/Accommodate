@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// User 用户 table_name = user
+// User 用户 table_name = "user"
 type User struct {
 	ID           int           `json:"user_id"`                      //用户编号
 	Name         string        `gorm:"size:32;unique" json:"name"`   //用户名
@@ -21,7 +21,7 @@ type User struct {
 	Orders       []*OrderHouse //用户下的订单       一个人多次订单
 }
 
-// House 房屋信息 table_name = house
+// House 房屋信息 table_name = "house"
 type House struct {
 	gorm.Model           //房屋编号
 	UserId        uint   //房屋主人的用户编号  与用户进行关联
@@ -45,10 +45,10 @@ type House struct {
 	Orders     []*OrderHouse `gorm:"many2many:order_house" json:"orders"`          //房屋的订单    与房屋表进行管理
 }
 
-// Area 区域信息 table_name = area
+// Area 区域信息 table_name = "area"
 type Area struct {
-	Id     int      `json:"aid"`                  //区域编号     1    2
-	Name   string   `gorm:"size:32" json:"aname"` //区域名字     昌平 海淀
+	Id     int      `json:"aid"`                  //区域编号
+	Name   string   `gorm:"size:32" json:"aname"` //区域名字
 	Houses []*House `json:"houses"`               //区域所有的房屋   与房屋表进行关联
 }
 
@@ -66,7 +66,7 @@ type HouseImage struct {
 	HouseId uint   `json:"house_id"`            //图片所属房屋编号
 }
 
-// OrderHouse 订单 table_name = order
+// OrderHouse 订单 table_name = "order_house"
 type OrderHouse struct {
 	gorm.Model           //订单编号
 	UserId     uint      `json:"user_id"`       //下单的用户编号   //与用户表进行关联

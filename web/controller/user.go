@@ -1,6 +1,8 @@
 package controller
 
 import (
+	modelMysql "RentHouse/web/model/mysql"
+	modelRedis "RentHouse/web/model/redis"
 	"RentHouse/web/proto/getCaptcha"
 	"RentHouse/web/proto/user"
 	"RentHouse/web/utils"
@@ -9,6 +11,7 @@ import (
 	"fmt"
 	"github.com/afocus/captcha"
 	"github.com/gin-gonic/gin"
+	"github.com/gomodule/redigo/redis"
 	"image/png"
 	"net/http"
 )
@@ -107,4 +110,37 @@ func PostRet(c *gin.Context) {
 		"errno":  resp.Errno,
 		"errmsg": utils.RecodeText(resp.Errno),
 	})
+}
+
+// GetArea 获取地区信息
+func GetArea(c *gin.Context) {
+	// 先从redis获取数据
+	redisConn := modelRedis.RedisPool.Get()
+	areaData, _ := redis.Bytes(redisConn.Do("GET", "areaData"))
+	var areas []modelMysql.Area
+	if len(areaData) == 0 { // redis中没有数据
+		// 从mysql获取数据
+		modelMysql.GlobalDB.Find(&areas)
+		// 把数据写入redis
+		redisConn := modelRedis.RedisPool.Get()
+		areasJson, _ := json.Marshal(areas)
+		_, err := redisConn.Do("SET", "areaData", areasJson)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	} else { // redis中有数据
+		err := json.Unmarshal(areaData, &areas)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"errno":  utils.RECODE_OK,
+		"errmsg": utils.RecodeText(utils.RECODE_OK),
+		"data":   areas,
+	})
+
 }
