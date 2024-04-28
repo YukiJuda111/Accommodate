@@ -10,21 +10,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/afocus/captcha"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
 	"image/png"
 	"net/http"
 )
-
-// GetSession 获取session
-func GetSession(c *gin.Context) {
-	errno := utils.RECODE_SESSIONERR
-	errmsg := utils.RecodeText(errno)
-	c.JSON(http.StatusOK, gin.H{
-		"errno":  errno,
-		"errmsg": errmsg,
-	})
-}
 
 // GetImageCd 获取图片验证码
 func GetImageCd(c *gin.Context) {
@@ -61,7 +52,7 @@ func GetSmscd(c *gin.Context) {
 	phoneNum := c.Param("phonenum")
 	imgCode := c.Query("text")
 	imgUUID := c.Query("id")
-
+	// 微服务初始化
 	consulSrv := utils.InitMicro()
 	client := user.NewUserService("user", consulSrv.Client())
 	request := &user.SmsRequest{
@@ -69,6 +60,7 @@ func GetSmscd(c *gin.Context) {
 		ImgCode:  imgCode,
 		Uuid:     imgUUID,
 	}
+	// 调用微服务
 	resp, err := client.SendSms(context.Background(), request)
 	if err != nil {
 		fmt.Println(err)
@@ -143,4 +135,59 @@ func GetArea(c *gin.Context) {
 		"data":   areas,
 	})
 
+}
+
+// PostLogin 登录
+func PostLogin(c *gin.Context) {
+	// 获取在请求荷载中的数据(随着POST请求发送的数据)
+	var loginData struct {
+		Mobile   string `json:"mobile"`
+		Password string `json:"password"`
+	}
+	err := c.Bind(&loginData)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	userName, err := modelMysql.Login(loginData.Mobile, loginData.Password)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"errno":  utils.RECODE_DATAERR,
+			"errmsg": utils.RecodeText(utils.RECODE_DATAERR),
+		})
+		return
+	}
+
+	// 登陆成功后设置session
+	session := sessions.Default(c)
+	session.Set("userName", userName)
+	err = session.Save()
+	if err != nil {
+		fmt.Println("session save failed: ", err)
+		return
+	}
+	c.JSON(200, gin.H{
+		"errno":  utils.RECODE_OK,
+		"errmsg": utils.RecodeText(utils.RECODE_OK),
+	})
+}
+
+// GetSession 获取session
+func GetSession(c *gin.Context) {
+	session := sessions.Default(c)
+	userName := session.Get("userName")
+	if userName == nil { // 未登录
+		c.JSON(http.StatusOK, gin.H{
+			"errno":  utils.RECODE_SESSIONERR,
+			"errmsg": utils.RecodeText(utils.RECODE_SESSIONERR),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"errno":  utils.RECODE_OK,
+		"errmsg": utils.RecodeText(utils.RECODE_OK),
+		"data":   map[string]interface{}{"name": userName},
+	})
 }

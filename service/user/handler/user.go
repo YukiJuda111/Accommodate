@@ -46,5 +46,7 @@ func (e *User) Register(ctx context.Context, req *user.RegisterRequest, rsp *use
 		rsp.Errno = utils.RECODE_DBERR
 		return err
 	}
+
+	rsp.Errno = utils.RECODE_OK
 	return nil
 }
