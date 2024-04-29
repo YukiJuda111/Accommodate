@@ -25,6 +25,9 @@ func Init() {
 		g.GET("/areas", controller.GetArea)
 		g.POST("/sessions", controller.PostLogin)
 		g.GET("/session", controller.GetSession)
+		g.DELETE("/session", controller.DeleteSession)
+		g.GET("/user", controller.GetUserInfo)
+		g.PUT("/user/name", controller.PutUserInfo)
 	}
 	// 启动运行
 	router.Run(":8080")
