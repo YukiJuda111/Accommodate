@@ -18,6 +18,9 @@ import (
 	"net/http"
 )
 
+// TODO: 修改prefixUrl为自己的七牛云存储空间地址
+var prefixUrl = "http://scpper6fg.hd-bkt.clouddn.com/"
+
 // GetImageCd 获取图片验证码
 func GetImageCd(c *gin.Context) {
 	uuid := c.Param("uuid")
@@ -214,13 +217,6 @@ func GetUserInfo(c *gin.Context) {
 	// 获取session,得到用户名
 	session := sessions.Default(c)
 	userName := session.Get("userName")
-	if userName == nil {
-		c.JSON(http.StatusOK, gin.H{
-			"errno":  utils.RECODE_SESSIONERR,
-			"errmsg": utils.RecodeText(utils.RECODE_SESSIONERR),
-		})
-		return
-	}
 
 	// 从mysql获取用户信息
 	userInfo, err := modelMysql.GetUserInfo(userName.(string))
@@ -231,6 +227,8 @@ func GetUserInfo(c *gin.Context) {
 		})
 		return
 	}
+
+	userInfo.AvatarUrl = prefixUrl + userInfo.AvatarUrl
 
 	// 获取需要用到的用户信息
 	userData := map[string]interface{}{
@@ -254,13 +252,6 @@ func PutUserInfo(c *gin.Context) {
 	// 获取session,得到用户名
 	session := sessions.Default(c)
 	userName := session.Get("userName")
-	if userName == nil { // 未登录
-		c.JSON(http.StatusOK, gin.H{
-			"errno":  utils.RECODE_SESSIONERR,
-			"errmsg": utils.RecodeText(utils.RECODE_SESSIONERR),
-		})
-		return
-	}
 
 	// 获取在请求荷载中的数据(随着POST请求发送的数据)
 	var putData struct {
@@ -305,12 +296,6 @@ func PostAvatar(c *gin.Context) {
 	// 获取session,得到用户名
 	session := sessions.Default(c)
 	userName := session.Get("userName")
-	if userName == nil { // 未登录
-		c.JSON(http.StatusOK, gin.H{
-			"errno":  utils.RECODE_SESSIONERR,
-			"errmsg": utils.RecodeText(utils.RECODE_SESSIONERR),
-		})
-	}
 
 	// 获取头像文件
 	file, err := c.FormFile("avatar")
@@ -319,6 +304,7 @@ func PostAvatar(c *gin.Context) {
 		return
 	}
 
+	// 调用七牛云上传文件
 	url, err := third_party.UploadFile(file)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -328,11 +314,22 @@ func PostAvatar(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(url)
+	// 更新mysql中的头像url
+	err = modelMysql.PutUserAvatar(userName.(string), url)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"errno":  utils.RECODE_DATAERR,
+			"errmsg": utils.RecodeText(utils.RECODE_DATAERR),
+		})
+		return
+
+	}
+
+	url = prefixUrl + url
 
 	c.JSON(http.StatusOK, gin.H{
 		"errno":  utils.RECODE_OK,
 		"errmsg": utils.RecodeText(utils.RECODE_OK),
-		"data":   map[string]interface{}{"avatar_url": "/home/" + file.Filename},
+		"data":   map[string]interface{}{"avatar_url": url},
 	})
 }

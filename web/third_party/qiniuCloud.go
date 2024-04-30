@@ -12,6 +12,7 @@ import (
 
 // UploadFile 通过七牛云上传文件
 func UploadFile(file *multipart.FileHeader) (string, error) {
+
 	fileSize := file.Size
 	f, _ := file.Open()
 	buf := make([]byte, file.Size)
