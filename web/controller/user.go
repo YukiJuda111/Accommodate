@@ -15,7 +15,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
 	"image/png"
-	"net/http"
 )
 
 // TODO: 修改prefixUrl为自己的七牛云存储空间地址
@@ -69,10 +68,8 @@ func GetSmscd(c *gin.Context) {
 		fmt.Println(err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"errno":  resp.Errno,
-		"errmsg": utils.RecodeText(resp.Errno),
-	})
+
+	utils.ResponseData(c, resp.Errno, nil)
 }
 
 // PostRet 发送注册信息
@@ -101,10 +98,8 @@ func PostRet(c *gin.Context) {
 		fmt.Println(err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"errno":  resp.Errno,
-		"errmsg": utils.RecodeText(resp.Errno),
-	})
+
+	utils.ResponseData(c, resp.Errno, nil)
 }
 
 // GetArea 获取地区信息
@@ -117,7 +112,6 @@ func GetArea(c *gin.Context) {
 		// 从mysql获取数据
 		modelMysql.GlobalDB.Find(&areas)
 		// 把数据写入redis
-		redisConn := modelRedis.RedisPool.Get()
 		areasJson, _ := json.Marshal(areas)
 		_, err := redisConn.Do("SET", "areaData", areasJson)
 		if err != nil {
@@ -132,11 +126,7 @@ func GetArea(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"errno":  utils.RECODE_OK,
-		"errmsg": utils.RecodeText(utils.RECODE_OK),
-		"data":   areas,
-	})
+	utils.ResponseData(c, utils.RECODE_OK, areas)
 
 }
 
@@ -155,10 +145,7 @@ func PostLogin(c *gin.Context) {
 
 	userName, err := modelMysql.Login(loginData.Mobile, loginData.Password)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"errno":  utils.RECODE_DATAERR,
-			"errmsg": utils.RecodeText(utils.RECODE_DATAERR),
-		})
+		utils.ResponseData(c, utils.RECODE_DATAERR, nil)
 		return
 	}
 
@@ -170,10 +157,8 @@ func PostLogin(c *gin.Context) {
 		fmt.Println("session save failed: ", err)
 		return
 	}
-	c.JSON(200, gin.H{
-		"errno":  utils.RECODE_OK,
-		"errmsg": utils.RecodeText(utils.RECODE_OK),
-	})
+
+	utils.ResponseData(c, utils.RECODE_OK, nil)
 }
 
 // GetSession 获取session
@@ -181,18 +166,11 @@ func GetSession(c *gin.Context) {
 	session := sessions.Default(c)
 	userName := session.Get("userName")
 	if userName == nil { // 未登录
-		c.JSON(http.StatusOK, gin.H{
-			"errno":  utils.RECODE_SESSIONERR,
-			"errmsg": utils.RecodeText(utils.RECODE_SESSIONERR),
-		})
+		utils.ResponseData(c, utils.RECODE_SESSIONERR, nil)
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"errno":  utils.RECODE_OK,
-		"errmsg": utils.RecodeText(utils.RECODE_OK),
-		"data":   map[string]interface{}{"name": userName},
-	})
+	utils.ResponseData(c, utils.RECODE_OK, map[string]interface{}{"name": userName})
 }
 
 // DeleteSession 退出登录
@@ -206,10 +184,7 @@ func DeleteSession(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"errno":  utils.RECODE_OK,
-		"errmsg": utils.RecodeText(utils.RECODE_OK),
-	})
+	utils.ResponseData(c, utils.RECODE_OK, nil)
 }
 
 // GetUserInfo 获取用户信息
@@ -221,10 +196,7 @@ func GetUserInfo(c *gin.Context) {
 	// 从mysql获取用户信息
 	userInfo, err := modelMysql.GetUserInfo(userName.(string))
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"errno":  utils.RECODE_DATAERR,
-			"errmsg": utils.RecodeText(utils.RECODE_DATAERR),
-		})
+		utils.ResponseData(c, utils.RECODE_DATAERR, nil)
 		return
 	}
 
@@ -240,11 +212,7 @@ func GetUserInfo(c *gin.Context) {
 		"avatar_url": userInfo.AvatarUrl,
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"errno":  utils.RECODE_OK,
-		"errmsg": utils.RecodeText(utils.RECODE_OK),
-		"data":   userData,
-	})
+	utils.ResponseData(c, utils.RECODE_OK, userData)
 }
 
 // PutUserInfo 修改用户名
@@ -266,10 +234,7 @@ func PutUserInfo(c *gin.Context) {
 	// 修改用户名
 	err = modelMysql.PutUserInfo(userName.(string), putData.Name)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"errno":  utils.RECODE_DATAERR,
-			"errmsg": utils.RecodeText(utils.RECODE_DATAERR),
-		})
+		utils.ResponseData(c, utils.RECODE_DATAERR, nil)
 		return
 	}
 
@@ -277,18 +242,11 @@ func PutUserInfo(c *gin.Context) {
 	session.Set("userName", putData.Name)
 	err = session.Save()
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"errno":  utils.RECODE_SESSIONERR,
-			"errmsg": utils.RecodeText(utils.RECODE_SESSIONERR),
-		})
+		utils.ResponseData(c, utils.RECODE_SESSIONERR, nil)
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"errno":  utils.RECODE_OK,
-		"errmsg": utils.RecodeText(utils.RECODE_OK),
-		"data":   map[string]interface{}{"name": putData.Name},
-	})
+	utils.ResponseData(c, utils.RECODE_OK, map[string]interface{}{"name": putData.Name})
 }
 
 // PostAvatar 上传头像
@@ -307,29 +265,19 @@ func PostAvatar(c *gin.Context) {
 	// 调用七牛云上传文件
 	url, err := third_party.UploadFile(file)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"errno":  utils.RECODE_THIRDERR,
-			"errmsg": utils.RecodeText(utils.RECODE_THIRDERR),
-		})
+		utils.ResponseData(c, utils.RECODE_THIRDERR, nil)
 		return
 	}
 
 	// 更新mysql中的头像url
 	err = modelMysql.PutUserAvatar(userName.(string), url)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"errno":  utils.RECODE_DATAERR,
-			"errmsg": utils.RecodeText(utils.RECODE_DATAERR),
-		})
+		utils.ResponseData(c, utils.RECODE_DATAERR, nil)
 		return
 
 	}
 
 	url = prefixUrl + url
 
-	c.JSON(http.StatusOK, gin.H{
-		"errno":  utils.RECODE_OK,
-		"errmsg": utils.RecodeText(utils.RECODE_OK),
-		"data":   map[string]interface{}{"avatar_url": url},
-	})
+	utils.ResponseData(c, utils.RECODE_OK, map[string]interface{}{"avatar_url": url})
 }
