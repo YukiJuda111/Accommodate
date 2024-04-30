@@ -2,6 +2,7 @@ package router
 
 import (
 	"RentHouse/web/controller"
+	"RentHouse/web/middleware"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
@@ -24,10 +25,14 @@ func Init() {
 		g.POST("/users", controller.PostRet)
 		g.GET("/areas", controller.GetArea)
 		g.POST("/sessions", controller.PostLogin)
+
+		// 使用中间件,之后的接口都不需要校验Session了
+		g.Use(middleware.LoginFilter())
 		g.GET("/session", controller.GetSession)
 		g.DELETE("/session", controller.DeleteSession)
 		g.GET("/user", controller.GetUserInfo)
 		g.PUT("/user/name", controller.PutUserInfo)
+		g.POST("/user/avatar", controller.PostAvatar)
 	}
 	// 启动运行
 	router.Run(":8080")

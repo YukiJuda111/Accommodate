@@ -9,6 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-micro/plugins/v4/registry/consul v1.2.1
 	github.com/gomodule/redigo v2.0.0+incompatible
+	github.com/qiniu/go-sdk/v7 v7.20.1
 	go-micro.dev/v4 v4.9.0
 	google.golang.org/protobuf v1.33.0
 	gorm.io/driver/mysql v1.5.6
@@ -45,6 +46,7 @@ require (
 	github.com/gobwas/pool v0.2.1 // indirect
 	github.com/gobwas/ws v1.0.4 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/gofrs/flock v0.8.1 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.2.0 // indirect

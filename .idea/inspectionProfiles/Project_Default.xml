@@ -24,6 +24,7 @@
         <method importPath="github.com/gin-gonic/gin" receiver="*Engine" name="Run" />
         <method importPath="github.com/afocus/captcha" receiver="*Captcha" name="SetFont" />
         <method importPath="github.com/gomodule/redigo/redis" receiver="Conn" name="Close" />
+        <method importPath="mime/multipart" receiver="File" name="Read" />
       </methods>
     </inspection_tool>
   </profile>

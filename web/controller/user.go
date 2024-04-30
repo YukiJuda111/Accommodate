@@ -5,6 +5,7 @@ import (
 	modelRedis "RentHouse/web/model/redis"
 	"RentHouse/web/proto/getCaptcha"
 	"RentHouse/web/proto/user"
+	"RentHouse/web/third_party"
 	"RentHouse/web/utils"
 	"context"
 	"encoding/json"
@@ -20,7 +21,6 @@ import (
 // GetImageCd 获取图片验证码
 func GetImageCd(c *gin.Context) {
 	uuid := c.Param("uuid")
-
 	consulSrv := utils.InitMicro()
 	client := getCaptcha.NewGetCaptchaService("getcaptcha", consulSrv.Client())
 	request := &getCaptcha.CallRequest{
@@ -297,5 +297,42 @@ func PutUserInfo(c *gin.Context) {
 		"errno":  utils.RECODE_OK,
 		"errmsg": utils.RecodeText(utils.RECODE_OK),
 		"data":   map[string]interface{}{"name": putData.Name},
+	})
+}
+
+// PostAvatar 上传头像
+func PostAvatar(c *gin.Context) {
+	// 获取session,得到用户名
+	session := sessions.Default(c)
+	userName := session.Get("userName")
+	if userName == nil { // 未登录
+		c.JSON(http.StatusOK, gin.H{
+			"errno":  utils.RECODE_SESSIONERR,
+			"errmsg": utils.RecodeText(utils.RECODE_SESSIONERR),
+		})
+	}
+
+	// 获取头像文件
+	file, err := c.FormFile("avatar")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	url, err := third_party.UploadFile(file)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"errno":  utils.RECODE_THIRDERR,
+			"errmsg": utils.RecodeText(utils.RECODE_THIRDERR),
+		})
+		return
+	}
+
+	fmt.Println(url)
+
+	c.JSON(http.StatusOK, gin.H{
+		"errno":  utils.RECODE_OK,
+		"errmsg": utils.RecodeText(utils.RECODE_OK),
+		"data":   map[string]interface{}{"avatar_url": "/home/" + file.Filename},
 	})
 }
