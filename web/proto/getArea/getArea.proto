@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package getArea;
+
+option go_package = "./proto;getArea";
+
+service GetArea {
+	rpc Call(CallRequest) returns (CallResponse) {}
+}
+
+message CallRequest {
+}
+
+message CallResponse {
+	string errno = 1;
+	string errmsg = 2;
+	repeated area data = 3;
+}
+
+message area{
+	int32 aid = 1;
+	string aname = 2;
+}

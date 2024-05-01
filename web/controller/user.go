@@ -3,6 +3,7 @@ package controller
 import (
 	modelMysql "RentHouse/web/model/mysql"
 	modelRedis "RentHouse/web/model/redis"
+	"RentHouse/web/proto/getArea"
 	"RentHouse/web/proto/getCaptcha"
 	"RentHouse/web/proto/user"
 	"RentHouse/web/third_party"
@@ -126,7 +127,18 @@ func GetArea(c *gin.Context) {
 		}
 	}
 
-	utils.ResponseData(c, utils.RECODE_OK, areas)
+	// 微服务初始化
+	consulSrv := utils.InitMicro()
+	client := getArea.NewGetAreaService("getarea", consulSrv.Client())
+	request := &getArea.CallRequest{}
+	// 调用微服务
+	resp, err := client.Call(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	utils.ResponseData(c, resp.Errno, resp.Data)
 
 }
 
@@ -165,10 +177,6 @@ func PostLogin(c *gin.Context) {
 func GetSession(c *gin.Context) {
 	session := sessions.Default(c)
 	userName := session.Get("userName")
-	if userName == nil { // 未登录
-		utils.ResponseData(c, utils.RECODE_SESSIONERR, nil)
-		return
-	}
 
 	utils.ResponseData(c, utils.RECODE_OK, map[string]interface{}{"name": userName})
 }
