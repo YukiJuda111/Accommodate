@@ -11,16 +11,6 @@ func Login(phoneNum string, password string) (string, error) {
 	return user.Name, err
 }
 
-// GetUserInfo 获取用户信息
-func GetUserInfo(userName string) (User, error) {
-	user := User{
-		Name: userName,
-	}
-	// 查询用户信息,userName是唯一的,查First加快效率
-	err := GlobalDB.First(&user).Error
-	return user, err
-}
-
 // PutUserInfo 修改用户名
 func PutUserInfo(userName string, newName string) error {
 	return GlobalDB.Model(&User{}).Where("name = ?", userName).Update("name", newName).Error

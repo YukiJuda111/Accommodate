@@ -38,6 +38,7 @@ func NewUserEndpoints() []*api.Endpoint {
 type UserService interface {
 	SendSms(ctx context.Context, in *SmsRequest, opts ...client.CallOption) (*SmsResponse, error)
 	Register(ctx context.Context, in *RegisterRequest, opts ...client.CallOption) (*RegisterResponse, error)
+	GetUserInfo(ctx context.Context, in *UserInfoRequest, opts ...client.CallOption) (*UserInfoResponse, error)
 }
 
 type userService struct {
@@ -72,17 +73,29 @@ func (c *userService) Register(ctx context.Context, in *RegisterRequest, opts ..
 	return out, nil
 }
 
+func (c *userService) GetUserInfo(ctx context.Context, in *UserInfoRequest, opts ...client.CallOption) (*UserInfoResponse, error) {
+	req := c.c.NewRequest(c.name, "User.GetUserInfo", in)
+	out := new(UserInfoResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for User service
 
 type UserHandler interface {
 	SendSms(context.Context, *SmsRequest, *SmsResponse) error
 	Register(context.Context, *RegisterRequest, *RegisterResponse) error
+	GetUserInfo(context.Context, *UserInfoRequest, *UserInfoResponse) error
 }
 
 func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.HandlerOption) error {
 	type user interface {
 		SendSms(ctx context.Context, in *SmsRequest, out *SmsResponse) error
 		Register(ctx context.Context, in *RegisterRequest, out *RegisterResponse) error
+		GetUserInfo(ctx context.Context, in *UserInfoRequest, out *UserInfoResponse) error
 	}
 	type User struct {
 		user
@@ -101,4 +114,8 @@ func (h *userHandler) SendSms(ctx context.Context, in *SmsRequest, out *SmsRespo
 
 func (h *userHandler) Register(ctx context.Context, in *RegisterRequest, out *RegisterResponse) error {
 	return h.UserHandler.Register(ctx, in, out)
+}
+
+func (h *userHandler) GetUserInfo(ctx context.Context, in *UserInfoRequest, out *UserInfoResponse) error {
+	return h.UserHandler.GetUserInfo(ctx, in, out)
 }

@@ -7,6 +7,7 @@ option go_package = "./proto;user";
 service User {
 	rpc SendSms(SmsRequest) returns (SmsResponse) {}
 	rpc Register(RegisterRequest) returns (RegisterResponse) {}
+	rpc GetUserInfo(UserInfoRequest) returns (UserInfoResponse) {}
 }
 
 message SmsRequest {
@@ -29,3 +30,20 @@ message RegisterResponse {
 	string errno = 1;
 }
 
+message UserInfoRequest {
+	string name = 1;
+}
+
+message UserInfoResponse {
+	string errno = 1;
+	UserData userData = 2;
+}
+
+message UserData {
+	int32 user_id = 1;
+	string name = 2;
+	string mobile = 3;
+	string real_name = 4;
+	string id_card = 5;
+	string avatar_url = 6;
+}

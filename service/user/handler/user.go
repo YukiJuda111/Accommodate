@@ -9,6 +9,9 @@ import (
 	"user/utils"
 )
 
+// TODO: 修改prefixUrl为自己的七牛云存储空间地址
+var prefixUrl = "http://scpper6fg.hd-bkt.clouddn.com/"
+
 type User struct{}
 
 func (e *User) SendSms(ctx context.Context, req *user.SmsRequest, rsp *user.SmsResponse) error {
@@ -49,4 +52,28 @@ func (e *User) Register(ctx context.Context, req *user.RegisterRequest, rsp *use
 
 	rsp.Errno = utils.RECODE_OK
 	return nil
+}
+
+func (e *User) GetUserInfo(ctx context.Context, req *user.UserInfoRequest, rsp *user.UserInfoResponse) error {
+	// 从mysql获取用户信息
+	userInfo, err := modelMysql.GetUserInfo(req.Name)
+	if err != nil {
+		rsp.Errno = utils.RECODE_DBERR
+		return err
+	}
+
+	userInfo.AvatarUrl = prefixUrl + userInfo.AvatarUrl
+
+	var data user.UserData
+	data.UserId = int32(userInfo.ID)
+	data.Name = userInfo.Name
+	data.Mobile = userInfo.Mobile
+	data.RealName = userInfo.RealName
+	data.IdCard = userInfo.IdCard
+	data.AvatarUrl = userInfo.AvatarUrl
+
+	rsp.Errno = utils.RECODE_OK
+	rsp.UserData = &data
+	return nil
+
 }

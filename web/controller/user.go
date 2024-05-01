@@ -201,26 +201,20 @@ func GetUserInfo(c *gin.Context) {
 	session := sessions.Default(c)
 	userName := session.Get("userName")
 
-	// 从mysql获取用户信息
-	userInfo, err := modelMysql.GetUserInfo(userName.(string))
+	// 微服务初始化
+	consulSrv := utils.InitMicro()
+	client := user.NewUserService("user", consulSrv.Client())
+	request := &user.UserInfoRequest{
+		Name: userName.(string),
+	}
+	// 调用微服务
+	resp, err := client.GetUserInfo(context.Background(), request)
 	if err != nil {
-		utils.ResponseData(c, utils.RECODE_DATAERR, nil)
+		fmt.Println(err)
 		return
 	}
 
-	userInfo.AvatarUrl = prefixUrl + userInfo.AvatarUrl
-
-	// 获取需要用到的用户信息
-	userData := map[string]interface{}{
-		"user_id":    userInfo.ID,
-		"name":       userInfo.Name,
-		"mobile":     userInfo.Mobile,
-		"real_name":  userInfo.RealName,
-		"id_card":    userInfo.IdCard,
-		"avatar_url": userInfo.AvatarUrl,
-	}
-
-	utils.ResponseData(c, utils.RECODE_OK, userData)
+	utils.ResponseData(c, resp.Errno, resp.UserData)
 }
 
 // PutUserInfo 修改用户名
