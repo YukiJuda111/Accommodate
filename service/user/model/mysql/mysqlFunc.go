@@ -20,3 +20,14 @@ func GetUserInfo(userName string) (User, error) {
 	err := GlobalDB.First(&user).Error
 	return user, err
 }
+
+// Login 处理登陆业务,根据手机/密码获取用户名
+func Login(phoneNum string, password string) (string, error) {
+	user := User{
+		Mobile:       phoneNum,
+		PasswordHash: password,
+	}
+
+	err := GlobalDB.Find(&user).Error
+	return user.Name, err
+}

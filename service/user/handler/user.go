@@ -77,3 +77,16 @@ func (e *User) GetUserInfo(ctx context.Context, req *user.UserInfoRequest, rsp *
 	return nil
 
 }
+
+func (e *User) Login(ctx context.Context, req *user.LoginRequest, rsp *user.LoginResponse) error {
+
+	userName, err := modelMysql.Login(req.Mobile, req.Password)
+	if err != nil {
+		rsp.Errno = utils.RECODE_DATAERR
+		return nil
+	}
+
+	rsp.Errno = utils.RECODE_OK
+	rsp.Name = userName
+	return nil
+}

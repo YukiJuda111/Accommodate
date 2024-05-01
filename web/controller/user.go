@@ -155,22 +155,30 @@ func PostLogin(c *gin.Context) {
 		return
 	}
 
-	userName, err := modelMysql.Login(loginData.Mobile, loginData.Password)
+	// 微服务初始化
+	consulSrv := utils.InitMicro()
+	client := user.NewUserService("user", consulSrv.Client())
+	request := &user.LoginRequest{
+		Mobile:   loginData.Mobile,
+		Password: loginData.Password,
+	}
+	// 调用微服务
+	resp, err := client.Login(context.Background(), request)
 	if err != nil {
-		utils.ResponseData(c, utils.RECODE_DATAERR, nil)
+		fmt.Println(err)
 		return
 	}
 
 	// 登陆成功后设置session
 	session := sessions.Default(c)
-	session.Set("userName", userName)
+	session.Set("userName", resp.Name)
 	err = session.Save()
 	if err != nil {
 		fmt.Println("session save failed: ", err)
 		return
 	}
 
-	utils.ResponseData(c, utils.RECODE_OK, nil)
+	utils.ResponseData(c, resp.Errno, nil)
 }
 
 // GetSession 获取session

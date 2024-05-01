@@ -1,16 +1,5 @@
 package model
 
-// Login 处理登陆业务,根据手机/密码获取用户名
-func Login(phoneNum string, password string) (string, error) {
-	user := User{
-		Mobile:       phoneNum,
-		PasswordHash: password,
-	}
-
-	err := GlobalDB.Find(&user).Error
-	return user.Name, err
-}
-
 // PutUserInfo 修改用户名
 func PutUserInfo(userName string, newName string) error {
 	return GlobalDB.Model(&User{}).Where("name = ?", userName).Update("name", newName).Error

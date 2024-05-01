@@ -8,6 +8,7 @@ service User {
 	rpc SendSms(SmsRequest) returns (SmsResponse) {}
 	rpc Register(RegisterRequest) returns (RegisterResponse) {}
 	rpc GetUserInfo(UserInfoRequest) returns (UserInfoResponse) {}
+	rpc Login(LoginRequest) returns (LoginResponse) {}
 }
 
 message SmsRequest {
@@ -46,4 +47,14 @@ message UserData {
 	string real_name = 4;
 	string id_card = 5;
 	string avatar_url = 6;
+}
+
+message LoginRequest {
+	string mobile = 1;
+	string password = 2;
+}
+
+message LoginResponse {
+	string errno = 1;
+	string name = 2;
 }
