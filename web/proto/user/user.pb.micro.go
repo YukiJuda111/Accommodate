@@ -41,6 +41,8 @@ type UserService interface {
 	GetUserInfo(ctx context.Context, in *UserInfoRequest, opts ...client.CallOption) (*UserInfoResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...client.CallOption) (*LoginResponse, error)
 	PutUserInfo(ctx context.Context, in *PutUserRequest, opts ...client.CallOption) (*PutUserResponse, error)
+	PutAuth(ctx context.Context, in *AuthRequest, opts ...client.CallOption) (*AuthResponse, error)
+	GetHouse(ctx context.Context, in *GetHouseRequest, opts ...client.CallOption) (*GetHouseResponse, error)
 }
 
 type userService struct {
@@ -105,6 +107,26 @@ func (c *userService) PutUserInfo(ctx context.Context, in *PutUserRequest, opts 
 	return out, nil
 }
 
+func (c *userService) PutAuth(ctx context.Context, in *AuthRequest, opts ...client.CallOption) (*AuthResponse, error) {
+	req := c.c.NewRequest(c.name, "User.PutAuth", in)
+	out := new(AuthResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) GetHouse(ctx context.Context, in *GetHouseRequest, opts ...client.CallOption) (*GetHouseResponse, error) {
+	req := c.c.NewRequest(c.name, "User.GetHouse", in)
+	out := new(GetHouseResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for User service
 
 type UserHandler interface {
@@ -113,6 +135,8 @@ type UserHandler interface {
 	GetUserInfo(context.Context, *UserInfoRequest, *UserInfoResponse) error
 	Login(context.Context, *LoginRequest, *LoginResponse) error
 	PutUserInfo(context.Context, *PutUserRequest, *PutUserResponse) error
+	PutAuth(context.Context, *AuthRequest, *AuthResponse) error
+	GetHouse(context.Context, *GetHouseRequest, *GetHouseResponse) error
 }
 
 func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.HandlerOption) error {
@@ -122,6 +146,8 @@ func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.Handl
 		GetUserInfo(ctx context.Context, in *UserInfoRequest, out *UserInfoResponse) error
 		Login(ctx context.Context, in *LoginRequest, out *LoginResponse) error
 		PutUserInfo(ctx context.Context, in *PutUserRequest, out *PutUserResponse) error
+		PutAuth(ctx context.Context, in *AuthRequest, out *AuthResponse) error
+		GetHouse(ctx context.Context, in *GetHouseRequest, out *GetHouseResponse) error
 	}
 	type User struct {
 		user
@@ -152,4 +178,12 @@ func (h *userHandler) Login(ctx context.Context, in *LoginRequest, out *LoginRes
 
 func (h *userHandler) PutUserInfo(ctx context.Context, in *PutUserRequest, out *PutUserResponse) error {
 	return h.UserHandler.PutUserInfo(ctx, in, out)
+}
+
+func (h *userHandler) PutAuth(ctx context.Context, in *AuthRequest, out *AuthResponse) error {
+	return h.UserHandler.PutAuth(ctx, in, out)
+}
+
+func (h *userHandler) GetHouse(ctx context.Context, in *GetHouseRequest, out *GetHouseResponse) error {
+	return h.UserHandler.GetHouse(ctx, in, out)
 }

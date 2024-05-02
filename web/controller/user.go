@@ -298,3 +298,54 @@ func PostAvatar(c *gin.Context) {
 
 	utils.ResponseData(c, utils.RECODE_OK, map[string]interface{}{"avatar_url": url})
 }
+
+// PutUserAuth 实名认证
+func PutUserAuth(c *gin.Context) {
+	var authData struct {
+		RealName string `json:"real_name"`
+		IdCard   string `json:"id_card"`
+	}
+	err := c.Bind(&authData)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// 获取session,得到用户名
+	session := sessions.Default(c)
+	userName := session.Get("userName")
+
+	// 微服务初始化
+	consulSrv := utils.InitMicro()
+	client := user.NewUserService("user", consulSrv.Client())
+	request := &user.AuthRequest{
+		UserName: userName.(string),
+		RealName: authData.RealName,
+		IdCard:   authData.IdCard,
+	}
+	// 调用微服务
+	resp, _ := client.PutAuth(context.Background(), request)
+
+	utils.ResponseData(c, resp.Errno, nil)
+}
+
+// GetHouses 获取用户发布的房源
+func GetHouses(c *gin.Context) {
+	// 获取session,得到用户名
+	session := sessions.Default(c)
+	userName := session.Get("userName")
+
+	// 微服务初始化
+	consulSrv := utils.InitMicro()
+	client := user.NewUserService("user", consulSrv.Client())
+	request := &user.GetHouseRequest{
+		UserName: userName.(string),
+	}
+	// 调用微服务
+	resp, err := client.GetHouse(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	utils.ResponseData(c, resp.Errno, resp.HouseData)
+}

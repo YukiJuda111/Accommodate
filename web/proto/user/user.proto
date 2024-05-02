@@ -10,6 +10,8 @@ service User {
 	rpc GetUserInfo(UserInfoRequest) returns (UserInfoResponse) {}
 	rpc Login(LoginRequest) returns (LoginResponse) {}
 	rpc PutUserInfo(PutUserRequest) returns (PutUserResponse) {}
+	rpc PutAuth(AuthRequest) returns (AuthResponse) {}
+	rpc GetHouse(GetHouseRequest) returns (GetHouseResponse) {}
 }
 
 message SmsRequest {
@@ -69,3 +71,38 @@ message PutUserResponse {
 	string errno = 1;
 }
 
+message AuthRequest {
+	string realName = 1;
+	string idCard = 2;
+	string userName = 3;
+}
+
+message AuthResponse {
+	string errno = 1;
+}
+
+message GetHouseRequest {
+	string userName = 1;
+}
+
+message GetHouseResponse {
+	string errno = 1;
+	houses houseData = 2;
+}
+
+message houses{
+	repeated houseInfo houses = 1;
+}
+
+message houseInfo {
+	string address = 1;
+	string area_name = 2;
+	string ctime = 3;
+	int32 house_id = 4;
+	string img_url = 5;
+	int32 order_count = 6;
+	int32 price = 7;
+	int32 room_count = 8;
+	string title = 9;
+	string user_avatar = 10;
+}

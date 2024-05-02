@@ -11,7 +11,6 @@ func main() {
 	if err != nil {
 		return
 	}
-
 	modelRedis.RedisInit()
 
 	router.Init()

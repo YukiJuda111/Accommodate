@@ -2,9 +2,10 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	modelMysql "user/model/mysql"
 	modelRedis "user/model/redis"
-	"user/proto"
+	pb "user/proto"
 	"user/third_party"
 	"user/utils"
 )
@@ -14,7 +15,7 @@ var prefixUrl = "http://scpper6fg.hd-bkt.clouddn.com/"
 
 type User struct{}
 
-func (e *User) SendSms(ctx context.Context, req *user.SmsRequest, rsp *user.SmsResponse) error {
+func (e *User) SendSms(ctx context.Context, req *pb.SmsRequest, rsp *pb.SmsResponse) error {
 	// 校验图片验证码
 	if !modelRedis.CheckImgCode(req.Uuid, req.ImgCode) {
 		rsp.Errno = utils.RECODE_CAPTCHAERR
@@ -37,7 +38,7 @@ func (e *User) SendSms(ctx context.Context, req *user.SmsRequest, rsp *user.SmsR
 	return nil
 }
 
-func (e *User) Register(ctx context.Context, req *user.RegisterRequest, rsp *user.RegisterResponse) error {
+func (e *User) Register(ctx context.Context, req *pb.RegisterRequest, rsp *pb.RegisterResponse) error {
 	// 校验短信验证码
 	if !modelRedis.CheckSmsCode(req.PhoneNum, req.SmsCode) {
 		rsp.Errno = utils.RECODE_DBERR
@@ -54,7 +55,7 @@ func (e *User) Register(ctx context.Context, req *user.RegisterRequest, rsp *use
 	return nil
 }
 
-func (e *User) GetUserInfo(ctx context.Context, req *user.UserInfoRequest, rsp *user.UserInfoResponse) error {
+func (e *User) GetUserInfo(ctx context.Context, req *pb.UserInfoRequest, rsp *pb.UserInfoResponse) error {
 	// 从mysql获取用户信息
 	userInfo, err := modelMysql.GetUserInfo(req.Name)
 	if err != nil {
@@ -64,7 +65,7 @@ func (e *User) GetUserInfo(ctx context.Context, req *user.UserInfoRequest, rsp *
 
 	userInfo.AvatarUrl = prefixUrl + userInfo.AvatarUrl
 
-	var data user.UserData
+	var data pb.UserData
 	data.UserId = int32(userInfo.ID)
 	data.Name = userInfo.Name
 	data.Mobile = userInfo.Mobile
@@ -78,7 +79,7 @@ func (e *User) GetUserInfo(ctx context.Context, req *user.UserInfoRequest, rsp *
 
 }
 
-func (e *User) Login(ctx context.Context, req *user.LoginRequest, rsp *user.LoginResponse) error {
+func (e *User) Login(ctx context.Context, req *pb.LoginRequest, rsp *pb.LoginResponse) error {
 
 	userName, err := modelMysql.Login(req.Mobile, req.Password)
 	if err != nil {
@@ -91,7 +92,7 @@ func (e *User) Login(ctx context.Context, req *user.LoginRequest, rsp *user.Logi
 	return nil
 }
 
-func (e *User) PutUserInfo(ctx context.Context, req *user.PutUserRequest, rsp *user.PutUserResponse) error {
+func (e *User) PutUserInfo(ctx context.Context, req *pb.PutUserRequest, rsp *pb.PutUserResponse) error {
 	// 修改用户名
 	err := modelMysql.PutUserInfo(req.PrevName, req.Name)
 	if err != nil {
@@ -99,5 +100,50 @@ func (e *User) PutUserInfo(ctx context.Context, req *user.PutUserRequest, rsp *u
 		return err
 	}
 	rsp.Errno = utils.RECODE_OK
+	return nil
+}
+
+func (e *User) PutAuth(ctx context.Context, req *pb.AuthRequest, rsp *pb.AuthResponse) error {
+	err := modelMysql.SaveAuth(req.UserName, req.RealName, req.IdCard)
+	if err != nil {
+		rsp.Errno = utils.RECODE_DBERR
+		return err
+	}
+	rsp.Errno = utils.RECODE_OK
+	return nil
+}
+
+func (e *User) GetHouse(ctx context.Context, req *pb.GetHouseRequest, rsp *pb.GetHouseResponse) error {
+	// 从mysql获取用户发布的房源
+	houses, user, areas, err := modelMysql.GetHouses(req.UserName)
+	if err != nil {
+		rsp.Errno = utils.RECODE_DBERR
+		return err
+	}
+
+	//根据返回数据，构造返回值
+	var houseInfos pb.Houses
+	for k, v := range houses {
+		var house pb.HouseInfo
+
+		house.Address = v.Address
+		house.HouseId = int32(v.ID)
+		house.Ctime = v.CreatedAt.Format("2006-01-02 15:04:05")
+		house.ImgUrl = prefixUrl + v.IndexImageUrl
+		house.OrderCount = int32(v.OrderCount)
+		house.Price = int32(v.Price)
+		house.RoomCount = int32(v.RoomCount)
+		house.Title = v.Title
+		house.UserAvatar = prefixUrl + user.AvatarUrl
+		house.AreaName = areas[k].Name
+
+		houseInfos.Houses = append(houseInfos.Houses, &house)
+	}
+
+	fmt.Println("houseInfos = ", houseInfos, "areas = ", areas)
+
+	//返回数据
+	rsp.Errno = utils.RECODE_OK
+	rsp.HouseData = &houseInfos
 	return nil
 }
