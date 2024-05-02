@@ -241,10 +241,17 @@ func PutUserInfo(c *gin.Context) {
 		return
 	}
 
-	// 修改用户名
-	err = modelMysql.PutUserInfo(userName.(string), putData.Name)
+	// 微服务初始化
+	consulSrv := utils.InitMicro()
+	client := user.NewUserService("user", consulSrv.Client())
+	request := &user.PutUserRequest{
+		PrevName: userName.(string),
+		Name:     putData.Name,
+	}
+	// 调用微服务
+	resp, err := client.PutUserInfo(context.Background(), request)
 	if err != nil {
-		utils.ResponseData(c, utils.RECODE_DATAERR, nil)
+		utils.ResponseData(c, resp.Errno, nil)
 		return
 	}
 
@@ -256,7 +263,7 @@ func PutUserInfo(c *gin.Context) {
 		return
 	}
 
-	utils.ResponseData(c, utils.RECODE_OK, map[string]interface{}{"name": putData.Name})
+	utils.ResponseData(c, resp.Errno, map[string]interface{}{"name": putData.Name})
 }
 
 // PostAvatar 上传头像

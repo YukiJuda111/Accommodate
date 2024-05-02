@@ -31,3 +31,8 @@ func Login(phoneNum string, password string) (string, error) {
 	err := GlobalDB.Find(&user).Error
 	return user.Name, err
 }
+
+// PutUserInfo 修改用户名
+func PutUserInfo(userName string, newName string) error {
+	return GlobalDB.Model(&User{}).Where("name = ?", userName).Update("name", newName).Error
+}

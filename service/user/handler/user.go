@@ -90,3 +90,14 @@ func (e *User) Login(ctx context.Context, req *user.LoginRequest, rsp *user.Logi
 	rsp.Name = userName
 	return nil
 }
+
+func (e *User) PutUserInfo(ctx context.Context, req *user.PutUserRequest, rsp *user.PutUserResponse) error {
+	// 修改用户名
+	err := modelMysql.PutUserInfo(req.PrevName, req.Name)
+	if err != nil {
+		rsp.Errno = utils.RECODE_DBERR
+		return err
+	}
+	rsp.Errno = utils.RECODE_OK
+	return nil
+}

@@ -9,6 +9,7 @@ service User {
 	rpc Register(RegisterRequest) returns (RegisterResponse) {}
 	rpc GetUserInfo(UserInfoRequest) returns (UserInfoResponse) {}
 	rpc Login(LoginRequest) returns (LoginResponse) {}
+	rpc PutUserInfo(PutUserRequest) returns (PutUserResponse) {}
 }
 
 message SmsRequest {
@@ -58,3 +59,13 @@ message LoginResponse {
 	string errno = 1;
 	string name = 2;
 }
+
+message PutUserRequest {
+	string prevName = 1;
+	string name = 2;
+}
+
+message PutUserResponse {
+	string errno = 1;
+}
+

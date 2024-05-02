@@ -40,6 +40,7 @@ type UserService interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...client.CallOption) (*RegisterResponse, error)
 	GetUserInfo(ctx context.Context, in *UserInfoRequest, opts ...client.CallOption) (*UserInfoResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...client.CallOption) (*LoginResponse, error)
+	PutUserInfo(ctx context.Context, in *PutUserRequest, opts ...client.CallOption) (*PutUserResponse, error)
 }
 
 type userService struct {
@@ -94,6 +95,16 @@ func (c *userService) Login(ctx context.Context, in *LoginRequest, opts ...clien
 	return out, nil
 }
 
+func (c *userService) PutUserInfo(ctx context.Context, in *PutUserRequest, opts ...client.CallOption) (*PutUserResponse, error) {
+	req := c.c.NewRequest(c.name, "User.PutUserInfo", in)
+	out := new(PutUserResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for User service
 
 type UserHandler interface {
@@ -101,6 +112,7 @@ type UserHandler interface {
 	Register(context.Context, *RegisterRequest, *RegisterResponse) error
 	GetUserInfo(context.Context, *UserInfoRequest, *UserInfoResponse) error
 	Login(context.Context, *LoginRequest, *LoginResponse) error
+	PutUserInfo(context.Context, *PutUserRequest, *PutUserResponse) error
 }
 
 func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.HandlerOption) error {
@@ -109,6 +121,7 @@ func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.Handl
 		Register(ctx context.Context, in *RegisterRequest, out *RegisterResponse) error
 		GetUserInfo(ctx context.Context, in *UserInfoRequest, out *UserInfoResponse) error
 		Login(ctx context.Context, in *LoginRequest, out *LoginResponse) error
+		PutUserInfo(ctx context.Context, in *PutUserRequest, out *PutUserResponse) error
 	}
 	type User struct {
 		user
@@ -135,4 +148,8 @@ func (h *userHandler) GetUserInfo(ctx context.Context, in *UserInfoRequest, out 
 
 func (h *userHandler) Login(ctx context.Context, in *LoginRequest, out *LoginResponse) error {
 	return h.UserHandler.Login(ctx, in, out)
+}
+
+func (h *userHandler) PutUserInfo(ctx context.Context, in *PutUserRequest, out *PutUserResponse) error {
+	return h.UserHandler.PutUserInfo(ctx, in, out)
 }
