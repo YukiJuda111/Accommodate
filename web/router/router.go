@@ -39,6 +39,7 @@ func Init() {
 
 		g.POST("/houses", controller.PostHouses)
 		g.POST("/houses/:id/images", controller.PostHousesImage)
+		g.GET("/houses/:id", controller.GetHouseInfo)
 	}
 
 	// 启动运行

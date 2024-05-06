@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package getHouseInfo;
+
+option go_package = "./proto;getHouseInfo";
+
+service GetHouseInfo {
+	rpc Call(CallRequest) returns (CallResponse) {}
+}
+
+message CallRequest {
+	int32 houseId = 1;
+}
+
+message CallResponse {
+	string errno = 1;
+	data data = 2;
+}
+
+message data{
+	houseInfo house = 1;
+	int32 user_id = 2;
+}
+
+message houseInfo {
+	int32 acreage = 1;
+	string address = 2;
+	string beds = 3;
+	int32 capacity = 4;
+	repeated commentInfo comments = 5;
+	int32 deposit = 6;
+	repeated int32 facilities = 7;
+	int32 hid = 8;
+	repeated string img_urls = 9;
+	int32 max_days = 10;
+	int32 min_days = 11;
+	int32 price = 12;
+	int32 room_count = 13;
+	string title = 14;
+	string unit = 15;
+	string user_avatar = 16;
+	int32 user_id = 17;
+	string user_name = 18;
+}
+
+message commentInfo{
+	string comment = 1;
+	string ctime = 2;
+	string user_name = 3;
+}

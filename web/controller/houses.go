@@ -2,6 +2,7 @@ package controller
 
 import (
 	modelMysql "RentHouse/web/model/mysql"
+	"RentHouse/web/proto/getHouseInfo"
 	"RentHouse/web/proto/postHouses"
 	"RentHouse/web/third_party"
 	"RentHouse/web/utils"
@@ -97,4 +98,23 @@ func PostHousesImage(c *gin.Context) {
 	url = prefixUrl + url
 
 	utils.ResponseData(c, utils.RECODE_OK, map[string]interface{}{"url": url})
+}
+
+// GetHouseInfo 获取房屋信息
+func GetHouseInfo(c *gin.Context) {
+	houseId, _ := strconv.Atoi(c.Param("id"))
+
+	// 初始化微服务
+	consulSrv := utils.InitMicro()
+	client := getHouseInfo.NewGetHouseInfoService("gethouseinfo", consulSrv.Client())
+	request := &getHouseInfo.CallRequest{
+		HouseId: int32(houseId),
+	}
+	// 调用微服务
+	resp, err := client.Call(context.Background(), request)
+	if err != nil {
+		utils.ResponseData(c, resp.Errno, nil)
+		return
+	}
+	utils.ResponseData(c, resp.Errno, resp.Data)
 }
