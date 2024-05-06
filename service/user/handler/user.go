@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	modelMysql "user/model/mysql"
 	modelRedis "user/model/redis"
 	pb "user/proto"
@@ -139,8 +138,6 @@ func (e *User) GetHouse(ctx context.Context, req *pb.GetHouseRequest, rsp *pb.Ge
 
 		houseInfos.Houses = append(houseInfos.Houses, &house)
 	}
-
-	fmt.Println("houseInfos = ", houseInfos, "areas = ", areas)
 
 	//返回数据
 	rsp.Errno = utils.RECODE_OK

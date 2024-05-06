@@ -36,7 +36,11 @@ func Init() {
 		g.POST("/user/auth", controller.PutUserAuth)
 		g.GET("/user/auth", controller.GetUserInfo)
 		g.GET("/user/houses", controller.GetHouses)
+
+		g.POST("/houses", controller.PostHouses)
+		g.POST("/houses/:id/images", controller.PostHousesImage)
 	}
+
 	// 启动运行
 	router.Run(":8080")
 }

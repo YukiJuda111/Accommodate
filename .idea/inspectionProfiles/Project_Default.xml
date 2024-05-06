@@ -8,6 +8,7 @@
       <methods>
         <method importPath="gorm.io/gorm" receiver="*DB" name="DB" />
         <method importPath="RentHouse/web/proto/user" receiver="UserService" name="PutUserInfo" />
+        <method importPath="RentHouse/web/proto/postHouses" receiver="PostHousesService" name="Call" />
       </methods>
     </inspection_tool>
     <inspection_tool class="GoUnhandledErrorResult" enabled="true" level="WARNING" enabled_by_default="true">
