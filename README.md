@@ -1,4 +1,4 @@
-# RentHouse(暂时命名)
+# Accommodate
 基于golang的租房网站:[项目文档](https://www.yuque.com/yuk1-note/qnreni)
 ## 运行环境
 - go
