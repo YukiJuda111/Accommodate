@@ -1,7 +1,10 @@
 package model
 
 import (
+	"fmt"
+	pb "getHouseInfo/proto"
 	"strconv"
+	"time"
 )
 
 // TODO: 修改prefixUrl为自己的七牛云存储空间地址
@@ -97,4 +100,90 @@ func GetDetail(houseId int32) (House, []OrderHouse, []User, User, []Facility, []
 	}
 
 	return house, orders, orderUsers, user, facs, imgs, nil
+}
+
+// GetIndexHouse 获取首页展示的房屋信息
+func GetIndexHouse() ([]*pb.Houses, error) {
+
+	var housesResp []*pb.Houses
+
+	var houses []House
+	if err := GlobalDB.Limit(5).Find(&houses).Error; err != nil {
+		fmt.Println("获取房屋信息失败", err)
+		return nil, err
+	}
+
+	for _, house := range houses {
+		var houseTemp pb.Houses
+		houseTemp.Address = house.Address
+		//根据房屋信息获取地域信息
+		var area Area
+		var user User
+
+		GlobalDB.Where("id= ?", house.AreaId).Find(&area)
+		GlobalDB.Where("id= ?", house.UserId).Find(&user)
+
+		houseTemp.AreaName = area.Name
+		houseTemp.Ctime = house.CreatedAt.Format("2006-01-02 15:04:05")
+		houseTemp.HouseId = int32(house.ID)
+		houseTemp.ImgUrl = prefixUrl + house.IndexImageUrl
+		houseTemp.OrderCount = int32(house.OrderCount)
+		houseTemp.Price = int32(house.Price)
+		houseTemp.RoomCount = int32(house.RoomCount)
+		houseTemp.Title = house.Title
+		houseTemp.UserAvatar = prefixUrl + user.AvatarUrl
+
+		housesResp = append(housesResp, &houseTemp)
+	}
+
+	return housesResp, nil
+}
+
+// SearchHouse 获取搜索的房屋信息
+func SearchHouse(areaId, sd, ed, sk string) ([]*pb.Houses, error) {
+	var houseInfos []House
+
+	//   minDays  <  (结束时间  -  开始时间) <  max_days
+	//计算一个差值  先把string类型转为time类型
+	sdTime, _ := time.Parse("2006-01-02", sd)
+	edTime, _ := time.Parse("2006-01-02", ed)
+	dur := edTime.Sub(sdTime)
+
+	err := GlobalDB.Where("area_id = ?", areaId).
+		Where("min_days < ?", dur.Hours()/24).
+		Where("max_days > ?", dur.Hours()/24).
+		Order("created_at desc").Find(&houseInfos).Error
+	if err != nil {
+		fmt.Println("搜索房屋失败", err)
+		return nil, err
+	}
+
+	//获取[]*house.Houses
+	var housesResp []*pb.Houses
+
+	for _, v := range houseInfos {
+		var houseTemp pb.Houses
+		houseTemp.Address = v.Address
+		//根据房屋信息获取地域信息
+		var area Area
+		var user User
+
+		GlobalDB.Where("id = ?", v.AreaId).Find(&area)
+		GlobalDB.Where("id = ?", v.UserId).Find(&user)
+
+		houseTemp.AreaName = area.Name
+		houseTemp.Ctime = v.CreatedAt.Format("2006-01-02 15:04:05")
+		houseTemp.HouseId = int32(v.ID)
+		houseTemp.ImgUrl = prefixUrl + v.IndexImageUrl
+		houseTemp.OrderCount = int32(v.OrderCount)
+		houseTemp.Price = int32(v.Price)
+		houseTemp.RoomCount = int32(v.RoomCount)
+		houseTemp.Title = v.Title
+		houseTemp.UserAvatar = prefixUrl + user.AvatarUrl
+
+		housesResp = append(housesResp, &houseTemp)
+
+	}
+
+	return housesResp, nil
 }

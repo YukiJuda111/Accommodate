@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"strconv"
 )
 
@@ -117,4 +118,58 @@ func GetHouseInfo(c *gin.Context) {
 		return
 	}
 	utils.ResponseData(c, resp.Errno, resp.Data)
+}
+
+// GetIndex 获取首页房屋信息
+func GetIndex(c *gin.Context) {
+	// 初始化微服务
+	consulSrv := utils.InitMicro()
+	client := getHouseInfo.NewGetHouseInfoService("gethouseinfo", consulSrv.Client())
+	request := &getHouseInfo.IndexRequest{}
+	// 调用微服务
+	resp, err := client.GetHouseIndex(context.Background(), request)
+	if err != nil {
+		utils.ResponseData(c, resp.Errno, nil)
+		return
+	}
+	utils.ResponseData(c, resp.Errno, resp.Data)
+}
+
+// SearchHouses 获取房源信息
+func SearchHouses(c *gin.Context) {
+	//获取数据
+	// areaId
+	aid := c.Query("aid")
+	// start day
+	sd := c.Query("sd")
+	//end day
+	ed := c.Query("ed")
+	// 排序方式
+	sk := c.Query("sk")
+	// page  第几页
+	// 校验数据
+	if aid == "" || sd == "" || ed == "" || sk == "" {
+		fmt.Println("传入数据不完整")
+		return
+	}
+
+	// 初始化微服务
+	consulSrv := utils.InitMicro()
+	client := getHouseInfo.NewGetHouseInfoService("gethouseinfo", consulSrv.Client())
+	request := &getHouseInfo.SearchRequest{
+		Aid: aid,
+		Sd:  sd,
+		Ed:  ed,
+		Sk:  sk,
+	}
+	// 调用微服务
+	resp, err := client.SearchHouse(context.Background(), request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// 返回数据
+	c.JSON(http.StatusOK, resp)
+
 }

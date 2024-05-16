@@ -40,6 +40,16 @@ func Init() {
 		g.POST("/houses", controller.PostHouses)
 		g.POST("/houses/:id/images", controller.PostHousesImage)
 		g.GET("/houses/:id", controller.GetHouseInfo)
+		g.GET("/house/index", controller.GetIndex)
+		g.GET("/houses", controller.SearchHouses)
+
+		// 下订单
+		g.POST("/orders", controller.PostOrders)
+		// 获取订单
+		g.GET("/user/orders", controller.GetUserOrder)
+		// 同意/拒绝订单
+		g.PUT("/orders/:id/status", controller.PutOrders)
+		g.PUT("/orders/:id/comment", controller.PutComment)
 	}
 
 	// 启动运行

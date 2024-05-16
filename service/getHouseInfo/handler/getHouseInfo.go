@@ -97,3 +97,31 @@ func (e *GetHouseInfo) Call(ctx context.Context, req *pb.CallRequest, rsp *pb.Ca
 	rsp.Data = &data
 	return nil
 }
+
+func (e *GetHouseInfo) GetHouseIndex(ctx context.Context, req *pb.IndexRequest, resp *pb.IndexResponse) error {
+	//获取房屋信息
+	houseResp, err := mysqlModel.GetIndexHouse()
+	if err != nil {
+		resp.Errno = utils.RECODE_DBERR
+		return nil
+	}
+
+	resp.Errno = utils.RECODE_OK
+	resp.Data = &pb.GetData{Houses: houseResp}
+
+	return nil
+}
+
+func (e *GetHouseInfo) SearchHouse(ctx context.Context, req *pb.SearchRequest, resp *pb.SearchResponse) error {
+	//根据传入的参数,查询符合条件的房屋信息
+	houseResp, err := mysqlModel.SearchHouse(req.Aid, req.Sd, req.Ed, req.Sk)
+	if err != nil {
+		resp.Errno = utils.RECODE_DATAERR
+		return nil
+	}
+
+	resp.Errno = utils.RECODE_OK
+
+	resp.Data = &pb.GetData{Houses: houseResp}
+	return nil
+}

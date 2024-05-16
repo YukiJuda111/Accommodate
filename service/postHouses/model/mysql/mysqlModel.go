@@ -47,8 +47,8 @@ type House struct {
 
 // Area 区域信息 table_name = "area"
 type Area struct {
-	Id     int      `json:"aid"`                  //区域编号     1    2
-	Name   string   `gorm:"size:32" json:"aname"` //区域名字     昌平 海淀
+	Id     int      `json:"aid"`                  //区域编号
+	Name   string   `gorm:"size:32" json:"aname"` //区域名字
 	Houses []*House `json:"houses"`               //区域所有的房屋   与房屋表进行关联
 }
 
@@ -79,6 +79,8 @@ type OrderHouse struct {
 	Status     string    `gorm:"default:'WAIT_ACCEPT'"` //订单状态
 	Comment    string    `gorm:"size:512"`              //订单评论
 	Credit     bool      //表示个人征信情况 true表示良好
+	Like       bool      //表示用户是否点赞
+	Dislike    bool      //表示用户是否点踩
 }
 
 var GlobalDB *gorm.DB

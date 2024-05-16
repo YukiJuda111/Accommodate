@@ -79,6 +79,8 @@ type OrderHouse struct {
 	Status     string    `gorm:"default:'WAIT_ACCEPT'"` //订单状态
 	Comment    string    `gorm:"size:512"`              //订单评论
 	Credit     bool      //表示个人征信情况 true表示良好
+	Like       bool      //表示用户是否点赞
+	Dislike    bool      //表示用户是否点踩
 }
 
 var GlobalDB *gorm.DB

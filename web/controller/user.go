@@ -329,7 +329,7 @@ func PutUserAuth(c *gin.Context) {
 	utils.ResponseData(c, resp.Errno, nil)
 }
 
-// GetHouses 获取用户发布的房源
+// SearchHouses 获取用户发布的房源
 func GetHouses(c *gin.Context) {
 	// 获取session,得到用户名
 	session := sessions.Default(c)

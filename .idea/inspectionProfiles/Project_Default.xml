@@ -10,6 +10,7 @@
         <method importPath="RentHouse/web/proto/user" receiver="UserService" name="PutUserInfo" />
         <method importPath="RentHouse/web/proto/postHouses" receiver="PostHousesService" name="Call" />
         <method importPath="RentHouse/web/proto/getHouseInfo" receiver="GetHouseInfoService" name="Call" />
+        <method importPath="RentHouse/web/proto/getHouseInfo" receiver="GetHouseInfoService" name="GetHouseIndex" />
       </methods>
     </inspection_tool>
     <inspection_tool class="GoUnhandledErrorResult" enabled="true" level="WARNING" enabled_by_default="true">

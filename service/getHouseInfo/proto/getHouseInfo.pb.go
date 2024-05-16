@@ -423,6 +423,391 @@ func (x *CommentInfo) GetUserName() string {
 	return ""
 }
 
+type IndexRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *IndexRequest) Reset() {
+	*x = IndexRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_getHouseInfo_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *IndexRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IndexRequest) ProtoMessage() {}
+
+func (x *IndexRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_getHouseInfo_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IndexRequest.ProtoReflect.Descriptor instead.
+func (*IndexRequest) Descriptor() ([]byte, []int) {
+	return file_proto_getHouseInfo_proto_rawDescGZIP(), []int{5}
+}
+
+type IndexResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Errno string   `protobuf:"bytes,1,opt,name=errno,proto3" json:"errno,omitempty"`
+	Data  *GetData `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+}
+
+func (x *IndexResponse) Reset() {
+	*x = IndexResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_getHouseInfo_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *IndexResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IndexResponse) ProtoMessage() {}
+
+func (x *IndexResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_getHouseInfo_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IndexResponse.ProtoReflect.Descriptor instead.
+func (*IndexResponse) Descriptor() ([]byte, []int) {
+	return file_proto_getHouseInfo_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *IndexResponse) GetErrno() string {
+	if x != nil {
+		return x.Errno
+	}
+	return ""
+}
+
+func (x *IndexResponse) GetData() *GetData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type GetData struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Houses []*Houses `protobuf:"bytes,1,rep,name=houses,proto3" json:"houses,omitempty"`
+}
+
+func (x *GetData) Reset() {
+	*x = GetData{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_getHouseInfo_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetData) ProtoMessage() {}
+
+func (x *GetData) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_getHouseInfo_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetData.ProtoReflect.Descriptor instead.
+func (*GetData) Descriptor() ([]byte, []int) {
+	return file_proto_getHouseInfo_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetData) GetHouses() []*Houses {
+	if x != nil {
+		return x.Houses
+	}
+	return nil
+}
+
+type Houses struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address    string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	AreaName   string `protobuf:"bytes,2,opt,name=area_name,json=areaName,proto3" json:"area_name,omitempty"`
+	Ctime      string `protobuf:"bytes,3,opt,name=ctime,proto3" json:"ctime,omitempty"`
+	HouseId    int32  `protobuf:"varint,4,opt,name=house_id,json=houseId,proto3" json:"house_id,omitempty"`
+	ImgUrl     string `protobuf:"bytes,5,opt,name=img_url,json=imgUrl,proto3" json:"img_url,omitempty"`
+	OrderCount int32  `protobuf:"varint,6,opt,name=order_count,json=orderCount,proto3" json:"order_count,omitempty"`
+	Price      int32  `protobuf:"varint,7,opt,name=price,proto3" json:"price,omitempty"`
+	RoomCount  int32  `protobuf:"varint,8,opt,name=room_count,json=roomCount,proto3" json:"room_count,omitempty"`
+	Title      string `protobuf:"bytes,9,opt,name=title,proto3" json:"title,omitempty"`
+	UserAvatar string `protobuf:"bytes,10,opt,name=user_avatar,json=userAvatar,proto3" json:"user_avatar,omitempty"`
+}
+
+func (x *Houses) Reset() {
+	*x = Houses{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_getHouseInfo_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Houses) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Houses) ProtoMessage() {}
+
+func (x *Houses) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_getHouseInfo_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Houses.ProtoReflect.Descriptor instead.
+func (*Houses) Descriptor() ([]byte, []int) {
+	return file_proto_getHouseInfo_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *Houses) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *Houses) GetAreaName() string {
+	if x != nil {
+		return x.AreaName
+	}
+	return ""
+}
+
+func (x *Houses) GetCtime() string {
+	if x != nil {
+		return x.Ctime
+	}
+	return ""
+}
+
+func (x *Houses) GetHouseId() int32 {
+	if x != nil {
+		return x.HouseId
+	}
+	return 0
+}
+
+func (x *Houses) GetImgUrl() string {
+	if x != nil {
+		return x.ImgUrl
+	}
+	return ""
+}
+
+func (x *Houses) GetOrderCount() int32 {
+	if x != nil {
+		return x.OrderCount
+	}
+	return 0
+}
+
+func (x *Houses) GetPrice() int32 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *Houses) GetRoomCount() int32 {
+	if x != nil {
+		return x.RoomCount
+	}
+	return 0
+}
+
+func (x *Houses) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *Houses) GetUserAvatar() string {
+	if x != nil {
+		return x.UserAvatar
+	}
+	return ""
+}
+
+type SearchRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Aid string `protobuf:"bytes,1,opt,name=aid,proto3" json:"aid,omitempty"`
+	Sd  string `protobuf:"bytes,2,opt,name=sd,proto3" json:"sd,omitempty"`
+	Ed  string `protobuf:"bytes,3,opt,name=ed,proto3" json:"ed,omitempty"`
+	Sk  string `protobuf:"bytes,4,opt,name=sk,proto3" json:"sk,omitempty"`
+}
+
+func (x *SearchRequest) Reset() {
+	*x = SearchRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_getHouseInfo_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SearchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchRequest) ProtoMessage() {}
+
+func (x *SearchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_getHouseInfo_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchRequest.ProtoReflect.Descriptor instead.
+func (*SearchRequest) Descriptor() ([]byte, []int) {
+	return file_proto_getHouseInfo_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *SearchRequest) GetAid() string {
+	if x != nil {
+		return x.Aid
+	}
+	return ""
+}
+
+func (x *SearchRequest) GetSd() string {
+	if x != nil {
+		return x.Sd
+	}
+	return ""
+}
+
+func (x *SearchRequest) GetEd() string {
+	if x != nil {
+		return x.Ed
+	}
+	return ""
+}
+
+func (x *SearchRequest) GetSk() string {
+	if x != nil {
+		return x.Sk
+	}
+	return ""
+}
+
+type SearchResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Errno string   `protobuf:"bytes,1,opt,name=errno,proto3" json:"errno,omitempty"`
+	Data  *GetData `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+}
+
+func (x *SearchResponse) Reset() {
+	*x = SearchResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_getHouseInfo_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SearchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchResponse) ProtoMessage() {}
+
+func (x *SearchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_getHouseInfo_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchResponse.ProtoReflect.Descriptor instead.
+func (*SearchResponse) Descriptor() ([]byte, []int) {
+	return file_proto_getHouseInfo_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *SearchResponse) GetErrno() string {
+	if x != nil {
+		return x.Errno
+	}
+	return ""
+}
+
+func (x *SearchResponse) GetData() *GetData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
 var File_proto_getHouseInfo_proto protoreflect.FileDescriptor
 
 var file_proto_getHouseInfo_proto_rawDesc = []byte{
@@ -478,14 +863,61 @@ var file_proto_getHouseInfo_proto_rawDesc = []byte{
 	0x6d, 0x65, 0x6e, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x02, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x05, 0x63, 0x74, 0x69, 0x6d, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x75, 0x73,
 	0x65, 0x72, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x75,
-	0x73, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x32, 0x4f, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x48, 0x6f,
-	0x75, 0x73, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x3f, 0x0a, 0x04, 0x43, 0x61, 0x6c, 0x6c, 0x12,
-	0x19, 0x2e, 0x67, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x43,
-	0x61, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x67, 0x65, 0x74,
+	0x73, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0x0e, 0x0a, 0x0c, 0x49, 0x6e, 0x64, 0x65, 0x78,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x50, 0x0a, 0x0d, 0x49, 0x6e, 0x64, 0x65, 0x78,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6e,
+	0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6e, 0x6f, 0x12, 0x29,
+	0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x67,
+	0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x47, 0x65, 0x74, 0x44,
+	0x61, 0x74, 0x61, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x22, 0x37, 0x0a, 0x07, 0x47, 0x65, 0x74,
+	0x44, 0x61, 0x74, 0x61, 0x12, 0x2c, 0x0a, 0x06, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x67, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49,
+	0x6e, 0x66, 0x6f, 0x2e, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x73, 0x52, 0x06, 0x68, 0x6f, 0x75, 0x73,
+	0x65, 0x73, 0x22, 0x96, 0x02, 0x0a, 0x06, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x73, 0x12, 0x18, 0x0a,
+	0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x1b, 0x0a, 0x09, 0x61, 0x72, 0x65, 0x61, 0x5f,
+	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x61, 0x72, 0x65, 0x61,
+	0x4e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x03, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x05, 0x63, 0x74, 0x69, 0x6d, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x68, 0x6f,
+	0x75, 0x73, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x68, 0x6f,
+	0x75, 0x73, 0x65, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x69, 0x6d, 0x67, 0x5f, 0x75, 0x72, 0x6c,
+	0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x69, 0x6d, 0x67, 0x55, 0x72, 0x6c, 0x12, 0x1f,
+	0x0a, 0x0b, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x5f, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x06, 0x20,
+	0x01, 0x28, 0x05, 0x52, 0x0a, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x12,
+	0x14, 0x0a, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05,
+	0x70, 0x72, 0x69, 0x63, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x6f, 0x6f, 0x6d, 0x5f, 0x63, 0x6f,
+	0x75, 0x6e, 0x74, 0x18, 0x08, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x72, 0x6f, 0x6f, 0x6d, 0x43,
+	0x6f, 0x75, 0x6e, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x09, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x75, 0x73,
+	0x65, 0x72, 0x5f, 0x61, 0x76, 0x61, 0x74, 0x61, 0x72, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0a, 0x75, 0x73, 0x65, 0x72, 0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x22, 0x51, 0x0a, 0x0d, 0x53,
+	0x65, 0x61, 0x72, 0x63, 0x68, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x10, 0x0a, 0x03,
+	0x61, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x61, 0x69, 0x64, 0x12, 0x0e,
+	0x0a, 0x02, 0x73, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x73, 0x64, 0x12, 0x0e,
+	0x0a, 0x02, 0x65, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x65, 0x64, 0x12, 0x0e,
+	0x0a, 0x02, 0x73, 0x6b, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x73, 0x6b, 0x22, 0x51,
+	0x0a, 0x0e, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6e, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x05, 0x65, 0x72, 0x72, 0x6e, 0x6f, 0x12, 0x29, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x67, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49,
+	0x6e, 0x66, 0x6f, 0x2e, 0x47, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52, 0x04, 0x64, 0x61, 0x74,
+	0x61, 0x32, 0xe7, 0x01, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49, 0x6e,
+	0x66, 0x6f, 0x12, 0x3f, 0x0a, 0x04, 0x43, 0x61, 0x6c, 0x6c, 0x12, 0x19, 0x2e, 0x67, 0x65, 0x74,
 	0x48, 0x6f, 0x75, 0x73, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x16, 0x5a, 0x14, 0x2e, 0x2f, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x3b, 0x67, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49, 0x6e, 0x66, 0x6f,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x67, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65,
+	0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x00, 0x12, 0x4a, 0x0a, 0x0d, 0x47, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49,
+	0x6e, 0x64, 0x65, 0x78, 0x12, 0x1a, 0x2e, 0x67, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49,
+	0x6e, 0x66, 0x6f, 0x2e, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x1b, 0x2e, 0x67, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e,
+	0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12,
+	0x4a, 0x0a, 0x0b, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x12, 0x1b,
+	0x2e, 0x67, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x53, 0x65,
+	0x61, 0x72, 0x63, 0x68, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x67, 0x65,
+	0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x53, 0x65, 0x61, 0x72, 0x63,
+	0x68, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x16, 0x5a, 0x14, 0x2e,
+	0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x3b, 0x67, 0x65, 0x74, 0x48, 0x6f, 0x75, 0x73, 0x65, 0x49,
+	0x6e, 0x66, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -500,25 +932,38 @@ func file_proto_getHouseInfo_proto_rawDescGZIP() []byte {
 	return file_proto_getHouseInfo_proto_rawDescData
 }
 
-var file_proto_getHouseInfo_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_proto_getHouseInfo_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_proto_getHouseInfo_proto_goTypes = []interface{}{
-	(*CallRequest)(nil),  // 0: getHouseInfo.CallRequest
-	(*CallResponse)(nil), // 1: getHouseInfo.CallResponse
-	(*Data)(nil),         // 2: getHouseInfo.data
-	(*HouseInfo)(nil),    // 3: getHouseInfo.houseInfo
-	(*CommentInfo)(nil),  // 4: getHouseInfo.commentInfo
+	(*CallRequest)(nil),    // 0: getHouseInfo.CallRequest
+	(*CallResponse)(nil),   // 1: getHouseInfo.CallResponse
+	(*Data)(nil),           // 2: getHouseInfo.data
+	(*HouseInfo)(nil),      // 3: getHouseInfo.houseInfo
+	(*CommentInfo)(nil),    // 4: getHouseInfo.commentInfo
+	(*IndexRequest)(nil),   // 5: getHouseInfo.IndexRequest
+	(*IndexResponse)(nil),  // 6: getHouseInfo.IndexResponse
+	(*GetData)(nil),        // 7: getHouseInfo.GetData
+	(*Houses)(nil),         // 8: getHouseInfo.Houses
+	(*SearchRequest)(nil),  // 9: getHouseInfo.SearchRequest
+	(*SearchResponse)(nil), // 10: getHouseInfo.SearchResponse
 }
 var file_proto_getHouseInfo_proto_depIdxs = []int32{
-	2, // 0: getHouseInfo.CallResponse.data:type_name -> getHouseInfo.data
-	3, // 1: getHouseInfo.data.house:type_name -> getHouseInfo.houseInfo
-	4, // 2: getHouseInfo.houseInfo.comments:type_name -> getHouseInfo.commentInfo
-	0, // 3: getHouseInfo.GetHouseInfo.Call:input_type -> getHouseInfo.CallRequest
-	1, // 4: getHouseInfo.GetHouseInfo.Call:output_type -> getHouseInfo.CallResponse
-	4, // [4:5] is the sub-list for method output_type
-	3, // [3:4] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2,  // 0: getHouseInfo.CallResponse.data:type_name -> getHouseInfo.data
+	3,  // 1: getHouseInfo.data.house:type_name -> getHouseInfo.houseInfo
+	4,  // 2: getHouseInfo.houseInfo.comments:type_name -> getHouseInfo.commentInfo
+	7,  // 3: getHouseInfo.IndexResponse.data:type_name -> getHouseInfo.GetData
+	8,  // 4: getHouseInfo.GetData.houses:type_name -> getHouseInfo.Houses
+	7,  // 5: getHouseInfo.SearchResponse.data:type_name -> getHouseInfo.GetData
+	0,  // 6: getHouseInfo.GetHouseInfo.Call:input_type -> getHouseInfo.CallRequest
+	5,  // 7: getHouseInfo.GetHouseInfo.GetHouseIndex:input_type -> getHouseInfo.IndexRequest
+	9,  // 8: getHouseInfo.GetHouseInfo.SearchHouse:input_type -> getHouseInfo.SearchRequest
+	1,  // 9: getHouseInfo.GetHouseInfo.Call:output_type -> getHouseInfo.CallResponse
+	6,  // 10: getHouseInfo.GetHouseInfo.GetHouseIndex:output_type -> getHouseInfo.IndexResponse
+	10, // 11: getHouseInfo.GetHouseInfo.SearchHouse:output_type -> getHouseInfo.SearchResponse
+	9,  // [9:12] is the sub-list for method output_type
+	6,  // [6:9] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_proto_getHouseInfo_proto_init() }
@@ -587,6 +1032,78 @@ func file_proto_getHouseInfo_proto_init() {
 				return nil
 			}
 		}
+		file_proto_getHouseInfo_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IndexRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_getHouseInfo_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IndexResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_getHouseInfo_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetData); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_getHouseInfo_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Houses); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_getHouseInfo_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SearchRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_getHouseInfo_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SearchResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -594,7 +1111,7 @@ func file_proto_getHouseInfo_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_getHouseInfo_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

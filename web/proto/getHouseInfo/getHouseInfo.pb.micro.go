@@ -37,6 +37,8 @@ func NewGetHouseInfoEndpoints() []*api.Endpoint {
 
 type GetHouseInfoService interface {
 	Call(ctx context.Context, in *CallRequest, opts ...client.CallOption) (*CallResponse, error)
+	GetHouseIndex(ctx context.Context, in *IndexRequest, opts ...client.CallOption) (*IndexResponse, error)
+	SearchHouse(ctx context.Context, in *SearchRequest, opts ...client.CallOption) (*SearchResponse, error)
 }
 
 type getHouseInfoService struct {
@@ -61,15 +63,39 @@ func (c *getHouseInfoService) Call(ctx context.Context, in *CallRequest, opts ..
 	return out, nil
 }
 
+func (c *getHouseInfoService) GetHouseIndex(ctx context.Context, in *IndexRequest, opts ...client.CallOption) (*IndexResponse, error) {
+	req := c.c.NewRequest(c.name, "GetHouseInfo.GetHouseIndex", in)
+	out := new(IndexResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *getHouseInfoService) SearchHouse(ctx context.Context, in *SearchRequest, opts ...client.CallOption) (*SearchResponse, error) {
+	req := c.c.NewRequest(c.name, "GetHouseInfo.SearchHouse", in)
+	out := new(SearchResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for GetHouseInfo service
 
 type GetHouseInfoHandler interface {
 	Call(context.Context, *CallRequest, *CallResponse) error
+	GetHouseIndex(context.Context, *IndexRequest, *IndexResponse) error
+	SearchHouse(context.Context, *SearchRequest, *SearchResponse) error
 }
 
 func RegisterGetHouseInfoHandler(s server.Server, hdlr GetHouseInfoHandler, opts ...server.HandlerOption) error {
 	type getHouseInfo interface {
 		Call(ctx context.Context, in *CallRequest, out *CallResponse) error
+		GetHouseIndex(ctx context.Context, in *IndexRequest, out *IndexResponse) error
+		SearchHouse(ctx context.Context, in *SearchRequest, out *SearchResponse) error
 	}
 	type GetHouseInfo struct {
 		getHouseInfo
@@ -84,4 +110,12 @@ type getHouseInfoHandler struct {
 
 func (h *getHouseInfoHandler) Call(ctx context.Context, in *CallRequest, out *CallResponse) error {
 	return h.GetHouseInfoHandler.Call(ctx, in, out)
+}
+
+func (h *getHouseInfoHandler) GetHouseIndex(ctx context.Context, in *IndexRequest, out *IndexResponse) error {
+	return h.GetHouseInfoHandler.GetHouseIndex(ctx, in, out)
+}
+
+func (h *getHouseInfoHandler) SearchHouse(ctx context.Context, in *SearchRequest, out *SearchResponse) error {
+	return h.GetHouseInfoHandler.SearchHouse(ctx, in, out)
 }
