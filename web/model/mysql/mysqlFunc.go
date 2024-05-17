@@ -32,3 +32,10 @@ func PostHouseImage(houseId uint, url string) error {
 func PutComment(orderId int, comment string) error {
 	return GlobalDB.Model(&OrderHouse{}).Where("id = ?", orderId).Update("comment", comment).Error
 }
+
+func FindHouseIdByOrderId(orderId int) (int, error) {
+	var order OrderHouse
+	err := GlobalDB.First(&order, orderId).Error
+	ret := (int)(order.HouseId)
+	return ret, err
+}

@@ -56,7 +56,6 @@ func (e *Orders) UpdateStatus(ctx context.Context, req *pb.UpdateReq, resp *pb.U
 		resp.Errmsg = utils.RecodeText(utils.RECODE_DATAERR)
 		return nil
 	}
-
 	resp.Errno = utils.RECODE_OK
 	resp.Errmsg = utils.RecodeText(utils.RECODE_OK)
 

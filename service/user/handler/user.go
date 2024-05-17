@@ -85,7 +85,6 @@ func (e *User) Login(ctx context.Context, req *pb.LoginRequest, rsp *pb.LoginRes
 		rsp.Errno = utils.RECODE_DATAERR
 		return nil
 	}
-
 	rsp.Errno = utils.RECODE_OK
 	rsp.Name = userName
 	return nil

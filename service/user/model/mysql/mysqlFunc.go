@@ -23,12 +23,8 @@ func GetUserInfo(userName string) (User, error) {
 
 // Login 处理登陆业务,根据手机/密码获取用户名
 func Login(phoneNum string, password string) (string, error) {
-	user := User{
-		Mobile:       phoneNum,
-		PasswordHash: password,
-	}
-
-	err := GlobalDB.Find(&user).Error
+	var user User
+	err := GlobalDB.Where("mobile = ? and password_hash = ?", phoneNum, password).First(&user).Error
 	return user.Name, err
 }
 

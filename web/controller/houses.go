@@ -62,6 +62,7 @@ func PostHouses(c *gin.Context) {
 		Title:     houseInfo.Title,
 		Unit:      houseInfo.Unit,
 	}
+
 	// 调用微服务
 	resp, err := client.Call(context.Background(), request)
 	if err != nil {
