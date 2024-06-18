@@ -16,7 +16,7 @@ func Init() {
 	store, _ := redis.NewStore(10, "tcp", "localhost:6379", "", []byte("secret"))
 	router.Use(sessions.Sessions("mysession", store))
 	// 静态资源处理
-	router.Static("/home", "view")
+	router.Static("/home", "web/view")
 	// 注册路由
 	g := router.Group("/api/v1.0")
 	{

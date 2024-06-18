@@ -1,0 +1,11 @@
+go 1.22
+
+use (
+    .
+    ./service/getArea
+    ./service/getCaptcha
+    ./service/getHouseInfo
+    ./service/orders
+    ./service/postHouses
+    ./service/user
+)

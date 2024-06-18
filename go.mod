@@ -10,7 +10,6 @@ require (
 	github.com/go-micro/plugins/v4/registry/consul v1.2.1
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/qiniu/go-sdk/v7 v7.20.1
-	github.com/zhenghaoz/gorse v0.5.0-alpha.0.20240325130705-3cfb6b213351
 	go-micro.dev/v4 v4.9.0
 	google.golang.org/protobuf v1.33.0
 	gorm.io/driver/mysql v1.5.6
@@ -39,8 +38,6 @@ require (
 	github.com/go-git/gcfg v1.5.0 // indirect
 	github.com/go-git/go-billy/v5 v5.3.1 // indirect
 	github.com/go-git/go-git/v5 v5.4.2 // indirect
-	github.com/go-logr/logr v1.2.3 // indirect
-	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.19.0 // indirect
@@ -52,6 +49,7 @@ require (
 	github.com/gofrs/flock v0.8.1 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/context v1.1.2 // indirect
 	github.com/gorilla/handlers v1.5.1 // indirect
@@ -94,10 +92,7 @@ require (
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/urfave/cli/v2 v2.3.0 // indirect
 	github.com/xanzy/ssh-agent v0.3.0 // indirect
-	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.36.4 // indirect
-	go.opentelemetry.io/otel v1.11.1 // indirect
-	go.opentelemetry.io/otel/metric v0.33.0 // indirect
-	go.opentelemetry.io/otel/trace v1.11.1 // indirect
+	go.uber.org/atomic v1.10.0 // indirect
 	golang.org/x/arch v0.7.0 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/image v0.15.0 // indirect
