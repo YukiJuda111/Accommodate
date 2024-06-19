@@ -8,7 +8,7 @@ import (
 )
 
 // TODO: 修改prefixUrl为自己的七牛云存储空间地址
-var prefixUrl = "http://scpper6fg.hd-bkt.clouddn.com/"
+var prefixUrl = "http://sf9x6ixky.hd-bkt.clouddn.com/"
 
 func InsertOrder(houseId, beginDate, endDate, userName string) (int, error) {
 	//获取插入对象

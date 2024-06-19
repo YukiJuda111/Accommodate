@@ -11,15 +11,16 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"image/png"
+
 	"github.com/afocus/captcha"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
-	"image/png"
 )
 
 // TODO: 修改prefixUrl为自己的七牛云存储空间地址
-var prefixUrl = "http://scpper6fg.hd-bkt.clouddn.com/"
+var prefixUrl = "http://sf9x6ixky.hd-bkt.clouddn.com/"
 
 // GetImageCd 获取图片验证码
 func GetImageCd(c *gin.Context) {

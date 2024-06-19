@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"mime/multipart"
+
 	"github.com/qiniu/go-sdk/v7/auth"
 	"github.com/qiniu/go-sdk/v7/storage"
-	"mime/multipart"
-	"os"
 )
 
 // UploadFile 通过七牛云上传文件
@@ -20,13 +20,13 @@ func UploadFile(file *multipart.FileHeader) (string, error) {
 	reader := bytes.NewReader(buf)
 
 	//自定义凭证有效期（示例2小时，Expires 单位为秒，为上传凭证的有效时间）
-	bucket := "accomodate"
+	bucket := "n0w13re"
 	putPolicy := storage.PutPolicy{
 		Scope: bucket,
 	}
 	putPolicy.Expires = 7200 //示例2小时有效期
 	// TODO: 从环境变量中获取
-	mac := auth.New(os.Getenv("QINIU_ACCESS_KEY"), os.Getenv("QINIU_SECRET_KEY"))
+	mac := auth.New("7h-G7N7OKrSvtVbzrle4yKD5IbzSf5I0fOqjZD-g", "Y_W9CrWpO23k_gV-PE5k7RNqeX38kePTNBIyV-sQ")
 	upToken := putPolicy.UploadToken(mac)
 
 	cfg := storage.Config{}
