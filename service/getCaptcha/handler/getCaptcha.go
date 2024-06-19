@@ -17,7 +17,7 @@ func (e *GetCaptcha) Call(ctx context.Context, req *pb.CallRequest, rsp *pb.Call
 	logger.Infof("Received GetCaptcha.Call request: %v", req)
 	capt := captcha.New()
 	// 可以设置多个字体 或使用cap.AddFont("xx.ttf")追加
-	capt.SetFont("./conf/comic.ttf")
+	capt.SetFont("service/getCaptcha/conf/comic.ttf")
 	// 设置验证码大小
 	capt.SetSize(128, 64)
 	// 设置干扰强度
