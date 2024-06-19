@@ -31,13 +31,13 @@ func SaveSmsCode(phoneNum, code string) error {
 
 // CheckSmsCode checks the sms code
 func CheckSmsCode(phoneNum, code string) bool {
-	return true
-	// conn := redisPool.Get()
-	// defer conn.Close()
-	// smsCode, err := redis.String(conn.Do("GET", phoneNum+"_code"))
-	// if err != nil {
-	// 	fmt.Println("redis get phone failed, err:", err)
-	// 	return false
-	// }
-	// return smsCode == code
+	// return true
+	conn := redisPool.Get()
+	defer conn.Close()
+	smsCode, err := redis.String(conn.Do("GET", phoneNum+"_code"))
+	if err != nil {
+		fmt.Println("redis get phone failed, err:", err)
+		return false
+	}
+	return smsCode == code
 }
